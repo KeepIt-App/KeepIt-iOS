@@ -7,21 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64D5E85A69407EEF578DC7DD /* Pods_KeepIt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */; };
 		A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D70A22700BBB300C723F9 /* AppDelegate.swift */; };
-		A87D70A72700BBB300C723F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D70A62700BBB300C723F9 /* ViewController.swift */; };
+		A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D70A62700BBB300C723F9 /* MainViewController.swift */; };
 		A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A87D70AB2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld */; };
 		A87D70AF2700BBB500C723F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87D70AE2700BBB500C723F9 /* Assets.xcassets */; };
 		A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KeepIt_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A87D709F2700BBB300C723F9 /* KeepIt-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KeepIt-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87D70A22700BBB300C723F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A87D70A62700BBB300C723F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A87D70A62700BBB300C723F9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A87D70AC2700BBB300C723F9 /* KeepIt_iOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KeepIt_iOS.xcdatamodel; sourceTree = "<group>"; };
 		A87D70AE2700BBB500C723F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A87D70B32700BBB500C723F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.release.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64D5E85A69407EEF578DC7DD /* Pods_KeepIt_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38D93108CE1548F0C81EC3DE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */,
+				D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		A87D70962700BBB300C723F9 = {
 			isa = PBXGroup;
 			children = (
 				A87D70A12700BBB300C723F9 /* KeepIt-iOS */,
 				A87D70A02700BBB300C723F9 /* Products */,
+				38D93108CE1548F0C81EC3DE /* Pods */,
+				F93C500EDDF931745630994D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +72,21 @@
 			isa = PBXGroup;
 			children = (
 				A87D70A22700BBB300C723F9 /* AppDelegate.swift */,
-				A87D70A62700BBB300C723F9 /* ViewController.swift */,
+				A87D70A62700BBB300C723F9 /* MainViewController.swift */,
 				A87D70AE2700BBB500C723F9 /* Assets.xcassets */,
 				A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */,
 				A87D70B32700BBB500C723F9 /* Info.plist */,
 				A87D70AB2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld */,
 			);
 			path = "KeepIt-iOS";
+			sourceTree = "<group>";
+		};
+		F93C500EDDF931745630994D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +96,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A87D70B62700BBB500C723F9 /* Build configuration list for PBXNativeTarget "KeepIt-iOS" */;
 			buildPhases = (
+				CEE7CB221710BC0A608DD50D /* [CP] Check Pods Manifest.lock */,
 				A87D709B2700BBB300C723F9 /* Sources */,
 				A87D709C2700BBB300C723F9 /* Frameworks */,
 				A87D709D2700BBB300C723F9 /* Resources */,
+				C2ED816941BFD0791242D9ED /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,12 +155,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C2ED816941BFD0791242D9ED /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CEE7CB221710BC0A608DD50D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KeepIt-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A87D709B2700BBB300C723F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A87D70A72700BBB300C723F9 /* ViewController.swift in Sources */,
+				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
 			);
@@ -271,6 +340,7 @@
 		};
 		A87D70B72700BBB500C723F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -290,6 +360,7 @@
 		};
 		A87D70B82700BBB500C723F9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
