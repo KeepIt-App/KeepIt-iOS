@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		64D5E85A69407EEF578DC7DD /* Pods_KeepIt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */; };
+		A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82F1B212710613E0046E1C6 /* Presenter.swift */; };
+		A82F1B242710616E0046E1C6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82F1B232710616E0046E1C6 /* Model.swift */; };
 		A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D70A22700BBB300C723F9 /* AppDelegate.swift */; };
 		A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D70A62700BBB300C723F9 /* MainViewController.swift */; };
 		A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A87D70AB2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld */; };
@@ -18,6 +20,8 @@
 /* Begin PBXFileReference section */
 		11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KeepIt_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A82F1B212710613E0046E1C6 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		A82F1B232710616E0046E1C6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		A87D709F2700BBB300C723F9 /* KeepIt-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KeepIt-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87D70A22700BBB300C723F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A87D70A62700BBB300C723F9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -46,8 +50,31 @@
 				1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */,
 				D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		A82F1B1E271060D50046E1C6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A82F1B232710616E0046E1C6 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A82F1B1F271060DE0046E1C6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A87D70A62700BBB300C723F9 /* MainViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A82F1B20271060E50046E1C6 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				A82F1B212710613E0046E1C6 /* Presenter.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 		A87D70962700BBB300C723F9 = {
@@ -71,8 +98,10 @@
 		A87D70A12700BBB300C723F9 /* KeepIt-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A82F1B20271060E50046E1C6 /* Presenter */,
+				A82F1B1F271060DE0046E1C6 /* View */,
+				A82F1B1E271060D50046E1C6 /* Model */,
 				A87D70A22700BBB300C723F9 /* AppDelegate.swift */,
-				A87D70A62700BBB300C723F9 /* MainViewController.swift */,
 				A87D70AE2700BBB500C723F9 /* Assets.xcassets */,
 				A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */,
 				A87D70B32700BBB500C723F9 /* Info.plist */,
@@ -204,6 +233,8 @@
 			files = (
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
+				A82F1B242710616E0046E1C6 /* Model.swift in Sources */,
+				A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
