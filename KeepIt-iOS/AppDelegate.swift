@@ -18,6 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController(rootViewController: MainViewController())
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+
+        for fontFamily in UIFont.familyNames {
+            for fontName in UIFont.fontNames(forFamilyName: fontFamily) {
+                print(fontName)
+            }
+        }
         return true
     }
 

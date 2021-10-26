@@ -15,6 +15,11 @@
 		A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A87D70AB2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld */; };
 		A87D70AF2700BBB500C723F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87D70AE2700BBB500C723F9 /* Assets.xcassets */; };
 		A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */; };
+		A8CF4DBF272873AD00FBF0CA /* nanum_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */; };
+		A8CF4DC0272873AD00FBF0CA /* nanum_extrabold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */; };
+		A8CF4DC1272873AD00FBF0CA /* nanum_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */; };
+		A8CF4DC2272873AD00FBF0CA /* nanum_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBE272873AD00FBF0CA /* nanum_bold.ttf */; };
+		A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CF4DC527287CA500FBF0CA /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +34,11 @@
 		A87D70AE2700BBB500C723F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A87D70B32700BBB500C723F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_regular.ttf; sourceTree = "<group>"; };
+		A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_extrabold.ttf; sourceTree = "<group>"; };
+		A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_light.ttf; sourceTree = "<group>"; };
+		A8CF4DBE272873AD00FBF0CA /* nanum_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_bold.ttf; sourceTree = "<group>"; };
+		A8CF4DC527287CA500FBF0CA /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.release.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +108,8 @@
 		A87D70A12700BBB300C723F9 /* KeepIt-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A8CF4DC427287C9400FBF0CA /* Extension */,
+				A8CF4DA527286F8700FBF0CA /* Fonts */,
 				A82F1B20271060E50046E1C6 /* Presenter */,
 				A82F1B1F271060DE0046E1C6 /* View */,
 				A82F1B1E271060D50046E1C6 /* Model */,
@@ -108,6 +120,25 @@
 				A87D70AB2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld */,
 			);
 			path = "KeepIt-iOS";
+			sourceTree = "<group>";
+		};
+		A8CF4DA527286F8700FBF0CA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A8CF4DBE272873AD00FBF0CA /* nanum_bold.ttf */,
+				A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */,
+				A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */,
+				A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		A8CF4DC427287C9400FBF0CA /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A8CF4DC527287CA500FBF0CA /* UIColor.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		F93C500EDDF931745630994D /* Frameworks */ = {
@@ -178,6 +209,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */,
+				A8CF4DC1272873AD00FBF0CA /* nanum_light.ttf in Resources */,
+				A8CF4DBF272873AD00FBF0CA /* nanum_regular.ttf in Resources */,
+				A8CF4DC2272873AD00FBF0CA /* nanum_bold.ttf in Resources */,
+				A8CF4DC0272873AD00FBF0CA /* nanum_extrabold.ttf in Resources */,
 				A87D70AF2700BBB500C723F9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
+				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
 				A82F1B242710616E0046E1C6 /* Model.swift in Sources */,
 				A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */,
@@ -304,7 +340,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -359,7 +395,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
