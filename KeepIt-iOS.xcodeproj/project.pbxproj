@@ -20,6 +20,8 @@
 		A8CF4DC1272873AD00FBF0CA /* nanum_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */; };
 		A8CF4DC2272873AD00FBF0CA /* nanum_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBE272873AD00FBF0CA /* nanum_bold.ttf */; };
 		A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CF4DC527287CA500FBF0CA /* UIColor.swift */; };
+		A8CF4DC82729AB1F00FBF0CA /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CF4DC72729AB1F00FBF0CA /* CALayer.swift */; };
+		A8CF4DCA2729B7E200FBF0CA /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CF4DC92729B7E200FBF0CA /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,8 @@
 		A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_light.ttf; sourceTree = "<group>"; };
 		A8CF4DBE272873AD00FBF0CA /* nanum_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_bold.ttf; sourceTree = "<group>"; };
 		A8CF4DC527287CA500FBF0CA /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		A8CF4DC72729AB1F00FBF0CA /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
+		A8CF4DC92729B7E200FBF0CA /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D522776951E35174FCE0CA39 /* Pods-KeepIt-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.release.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				A87D70A62700BBB300C723F9 /* MainViewController.swift */,
+				A8CF4DC92729B7E200FBF0CA /* SettingViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				A8CF4DC527287CA500FBF0CA /* UIColor.swift */,
+				A8CF4DC72729AB1F00FBF0CA /* CALayer.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -269,7 +275,9 @@
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
+				A8CF4DCA2729B7E200FBF0CA /* SettingViewController.swift in Sources */,
 				A82F1B242710616E0046E1C6 /* Model.swift in Sources */,
+				A8CF4DC82729AB1F00FBF0CA /* CALayer.swift in Sources */,
 				A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
 			);
