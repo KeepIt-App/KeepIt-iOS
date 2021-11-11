@@ -16,6 +16,8 @@
 		A87D70AF2700BBB500C723F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87D70AE2700BBB500C723F9 /* Assets.xcassets */; };
 		A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */; };
 		A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */; };
+		A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */; };
+		A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA05273D69A100C84C52 /* SettingTableData.swift */; };
 		A8CF4DBF272873AD00FBF0CA /* nanum_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */; };
 		A8CF4DC0272873AD00FBF0CA /* nanum_extrabold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */; };
 		A8CF4DC1272873AD00FBF0CA /* nanum_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */; };
@@ -37,6 +39,8 @@
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonExtension.swift; sourceTree = "<group>"; };
 		A8A6D9FF273D5CDD00C84C52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
+		A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		A8A6DA05273D69A100C84C52 /* SettingTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableData.swift; sourceTree = "<group>"; };
 		A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_regular.ttf; sourceTree = "<group>"; };
 		A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_extrabold.ttf; sourceTree = "<group>"; };
 		A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_light.ttf; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 		A8A6D9FD273D5B2900C84C52 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A8A6DA04273D697E00C84C52 /* ViewData */,
+				A8A6DA01273D65C900C84C52 /* Cell */,
 				A8CF4DC427287C9400FBF0CA /* Extension */,
 				A82F1B1F271060DE0046E1C6 /* View */,
 				A82F1B1E271060D50046E1C6 /* Model */,
@@ -149,6 +155,22 @@
 				A87D70A22700BBB300C723F9 /* AppDelegate.swift */,
 			);
 			path = System;
+			sourceTree = "<group>";
+		};
+		A8A6DA01273D65C900C84C52 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		A8A6DA04273D697E00C84C52 /* ViewData */ = {
+			isa = PBXGroup;
+			children = (
+				A8A6DA05273D69A100C84C52 /* SettingTableData.swift */,
+			);
+			path = ViewData;
 			sourceTree = "<group>";
 		};
 		A8CF4DA527286F8700FBF0CA /* Fonts */ = {
@@ -299,11 +321,13 @@
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
+				A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */,
 				A8CF4DCA2729B7E200FBF0CA /* SettingViewController.swift in Sources */,
 				A82F1B242710616E0046E1C6 /* Model.swift in Sources */,
 				A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */,
 				A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
+				A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
