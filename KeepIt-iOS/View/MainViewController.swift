@@ -24,6 +24,8 @@ class MainViewController: UIViewController {
         button.setTitle("최신순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
         button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
+        button.tag = 1
+        button.addTarget(self, action: #selector(filterButtonAction(sender:)), for: .touchUpInside)
         return button
     }()
 
@@ -32,6 +34,8 @@ class MainViewController: UIViewController {
         button.setTitle("중요도순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
         button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
+        button.tag = 2
+        button.addTarget(self, action: #selector(filterButtonAction(sender:)), for: .touchUpInside)
         return button
     }()
 
@@ -40,9 +44,15 @@ class MainViewController: UIViewController {
         button.setTitle("가격순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
         button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
+        button.tag = 3
+        button.addTarget(self, action: #selector(filterButtonAction(sender:)), for: .touchUpInside)
         return button
     }()
 
+    @objc
+    func filterButtonAction(sender: UIButton) {
+        print(sender.tag)
+    }
 
     private let settingButton: UIButton = {
         let button = UIButton()

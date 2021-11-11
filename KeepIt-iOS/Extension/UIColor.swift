@@ -8,19 +8,28 @@
 import UIKit
 
 extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-           assert(red >= 0 && red <= 255, "Invalid red component")
-           assert(green >= 0 && green <= 255, "Invalid green component")
-           assert(blue >= 0 && blue <= 255, "Invalid blue component")
+    
+    class var keepItBlue: UIColor {
+        UIColor(red: 0.37, green: 0.56, blue: 0.66, alpha: 1.00)
+    }
 
-           self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-       }
+    class var disabledGray: UIColor {
+        UIColor(red: 0.60, green: 0.64, blue: 0.66, alpha: 1.00)
+    }
 
-       convenience init(rgb: Int) {
-           self.init(
-               red: (rgb >> 16) & 0xFF,
-               green: (rgb >> 8) & 0xFF,
-               blue: rgb & 0xFF
-           )
-       }
+    class var disabledAllGray: UIColor {
+        UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 1.00)
+    }
+
+    class var errorRed: UIColor {
+        UIColor(red: 0.59, green: 0.00, blue: 0.00, alpha: 1.00)
+    }
+
+    class var textFieldBlue: UIColor {
+        UIColor(red: 0.30, green: 0.39, blue: 0.43, alpha: 1.00)
+    }
+
+    class var defaultBlack: UIColor {
+        UIColor(red: 0.19, green: 0.19, blue: 0.19, alpha: 1.00)
+    }
 }
