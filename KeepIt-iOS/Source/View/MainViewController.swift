@@ -155,14 +155,16 @@ class MainViewController: UIViewController {
 
     private func searchBarActivation() {
         if searchButtonState {
-
             UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseIn ,animations: {
                 self.searchBar.alpha = 1.0
+                self.searchBar.isUserInteractionEnabled = true
             })
             searchButtonState = !searchButtonState
         } else {
-            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseIn ,animations: {
+            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseOut ,animations: {
                 self.searchBar.alpha = 0.0
+                self.searchBar.isUserInteractionEnabled = false
+                self.searchBar.text = ""
             })
             searchButtonState = !searchButtonState
         }
