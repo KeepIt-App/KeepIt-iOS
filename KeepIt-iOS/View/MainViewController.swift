@@ -49,9 +49,18 @@ class MainViewController: UIViewController {
         return button
     }()
 
+    private lazy var buttonArray = [latestOrderButton, importanceOrderButton, priceOrderButton]
+
     @objc
     func filterButtonAction(sender: UIButton) {
-        print(sender.tag)
+        for btn in buttonArray {
+            if btn.tag == sender.tag {
+                sender.setTitleColor(UIColor.keepItBlue, for: .normal)
+            } else {
+                btn.setTitleColor(UIColor.disabledGray, for: .normal)
+            }
+        }
+
     }
 
     private let settingButton: UIButton = {
@@ -101,8 +110,8 @@ class MainViewController: UIViewController {
         setButton.title = "설정"
         toolBar.setItems([setButton,fixedSpace,searchButton, flexibleSpace, writeButton], animated: false)
         toolBar.isTranslucent = false
-        toolBar.barTintColor = #colorLiteral(red: 0.3725490196, green: 0.5647058824, blue: 0.6588235294, alpha: 1)
-        toolBar.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        toolBar.barTintColor = UIColor.keepItBlue
+        toolBar.layer.shadowColor = UIColor.black.cgColor
         toolBar.layer.shadowRadius = 2
         toolBar.layer.shadowOpacity = 0.5
         toolBar.layer.shadowOffset = CGSize(width: 0, height: 0)
