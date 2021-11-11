@@ -11,7 +11,7 @@ import SnapKit
 class SettingViewController: UIViewController {
 
     private let settingTableView: UITableView = UITableView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white

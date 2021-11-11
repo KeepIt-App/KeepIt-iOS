@@ -9,7 +9,9 @@ import UIKit
 import SnapKit
 
 class MainViewController: UIViewController {
-    
+
+    private var searchButtonState = true
+
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
         label.text = "KeepIt!"
@@ -126,7 +128,7 @@ class MainViewController: UIViewController {
 
     @objc
     func searchAction() {
-
+        searchBarActivation()
     }
 
     @objc
@@ -134,10 +136,37 @@ class MainViewController: UIViewController {
 
     }
 
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "검색어를 입력해주세요"
+        searchBar.searchTextField.font = UIFont(name: "NanumSquareB", size: 13)
+        searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: UISearchBar.Icon.search, state: .normal)
+        searchBar.setImage(UIImage(systemName: "xmark.circle.fill"), for: .clear, state: .normal)
+        searchBar.tintColor = UIColor.init(white: 0, alpha: 0.12)
+        searchBar.backgroundImage = UIImage()
+        return searchBar
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureUI()
+    }
+
+    private func searchBarActivation() {
+        if searchButtonState {
+
+            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseIn ,animations: {
+                self.searchBar.alpha = 1.0
+            })
+            searchButtonState = !searchButtonState
+        } else {
+            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseIn ,animations: {
+                self.searchBar.alpha = 0.0
+            })
+            searchButtonState = !searchButtonState
+        }
+
     }
 
     private func configureUI() {
@@ -146,6 +175,14 @@ class MainViewController: UIViewController {
         keepItMainLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(25)
+        }
+
+        view.addSubview(searchBar)
+        searchBar.alpha = 0.0
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(keepItMainLabel.snp.bottom).offset(10)
+            $0.centerX.equalTo(view.snp.centerX)
+            $0.width.equalTo(view.bounds.width - 20)
         }
 
         view.addSubview(filterStackView)
