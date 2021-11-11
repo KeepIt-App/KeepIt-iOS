@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("최신순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
-        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 13)
+        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
         return button
     }()
 
@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("중요도순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
-        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 13)
+        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
         return button
     }()
 
@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("가격순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
-        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 13)
+        button.titleLabel?.font = UIFont(name: "NanumSquareB", size: 14)
         return button
     }()
 
@@ -73,9 +73,15 @@ class MainViewController: UIViewController {
         return button
     }()
 
+    private lazy var filterStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [latestOrderButton, importanceOrderButton, priceOrderButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 25
+        return stackView
+    }()
+
     private lazy var mainToolBar: UIToolbar = {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 30))
         let fixedSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         fixedSpace.width = 10
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
@@ -112,22 +118,29 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.largeTitleDisplayMode = .automatic
-        
         configureUI()
     }
 
     private func configureUI() {
-        navigationItem.setLeftBarButton(UIBarButtonItem.init(customView: keepItMainLabel), animated: true)
-        navigationItem.setRightBarButtonItems([UIBarButtonItem.init(customView: latestOrderButton), UIBarButtonItem.init(customView: importanceOrderButton), UIBarButtonItem.init(customView: priceOrderButton)], animated: true)
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.isTranslucent = false
+
+        view.addSubview(keepItMainLabel)
+        keepItMainLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(25)
+        }
+
+        view.addSubview(filterStackView)
+        filterStackView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(25)
+        }
+
         view.addSubview(mainToolBar)
         mainToolBar.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            $0.height.equalTo(60)
         }
     }
 }
