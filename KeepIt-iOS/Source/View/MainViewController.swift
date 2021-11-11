@@ -120,6 +120,7 @@ class MainViewController: UIViewController {
     @objc
     func settingAction() {
         let settingVC = SettingViewController()
+        settingVC.navigationItem.title = "정보"
         navigationController?.pushViewController(settingVC, animated: true)
     }
 

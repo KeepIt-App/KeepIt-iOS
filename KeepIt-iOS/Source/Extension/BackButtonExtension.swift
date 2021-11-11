@@ -10,7 +10,9 @@ import UIKit
 extension UIViewController {
 
     func addBackButton() {
-        let backButton: UIButton = UIButton()
-        let image = UIImage(named: <#T##String#>)
+        let back = UIBarButtonItem()
+        back.title = "뒤로가기"
+        back.tintColor = UIColor.defaultBlack
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
     }
 }

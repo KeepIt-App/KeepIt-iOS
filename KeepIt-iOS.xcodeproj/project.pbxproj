@@ -35,8 +35,8 @@
 		A87D70AC2700BBB300C723F9 /* KeepIt_iOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KeepIt_iOS.xcdatamodel; sourceTree = "<group>"; };
 		A87D70AE2700BBB500C723F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A87D70B32700BBB500C723F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonExtension.swift; sourceTree = "<group>"; };
+		A8A6D9FF273D5CDD00C84C52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_regular.ttf; sourceTree = "<group>"; };
 		A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_extrabold.ttf; sourceTree = "<group>"; };
 		A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_light.ttf; sourceTree = "<group>"; };
@@ -123,9 +123,9 @@
 		A8A6D9FC273D5B1C00C84C52 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A8A6D9FF273D5CDD00C84C52 /* Info.plist */,
 				A8CF4DA527286F8700FBF0CA /* Fonts */,
 				A87D70AE2700BBB500C723F9 /* Assets.xcassets */,
-				A87D70B32700BBB500C723F9 /* Info.plist */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -133,10 +133,10 @@
 		A8A6D9FD273D5B2900C84C52 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A8CF4DC427287C9400FBF0CA /* Extension */,
 				A82F1B1F271060DE0046E1C6 /* View */,
 				A82F1B1E271060D50046E1C6 /* Model */,
 				A82F1B20271060E50046E1C6 /* Presenter */,
-				A8CF4DC427287C9400FBF0CA /* Extension */,
 			);
 			path = Source;
 			sourceTree = "<group>";
