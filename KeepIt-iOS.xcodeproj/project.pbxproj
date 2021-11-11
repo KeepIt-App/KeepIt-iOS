@@ -18,6 +18,7 @@
 		A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */; };
 		A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */; };
 		A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA05273D69A100C84C52 /* SettingTableData.swift */; };
+		A8A6DA08273D829300C84C52 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA07273D829300C84C52 /* MainCollectionViewCell.swift */; };
 		A8CF4DBF272873AD00FBF0CA /* nanum_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */; };
 		A8CF4DC0272873AD00FBF0CA /* nanum_extrabold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */; };
 		A8CF4DC1272873AD00FBF0CA /* nanum_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */; };
@@ -41,6 +42,7 @@
 		A8A6D9FF273D5CDD00C84C52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		A8A6DA05273D69A100C84C52 /* SettingTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableData.swift; sourceTree = "<group>"; };
+		A8A6DA07273D829300C84C52 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		A8CF4DBB272873AD00FBF0CA /* nanum_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_regular.ttf; sourceTree = "<group>"; };
 		A8CF4DBC272873AD00FBF0CA /* nanum_extrabold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_extrabold.ttf; sourceTree = "<group>"; };
 		A8CF4DBD272873AD00FBF0CA /* nanum_light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanum_light.ttf; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */,
+				A8A6DA07273D829300C84C52 /* MainCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				A8CF4DCA2729B7E200FBF0CA /* SettingViewController.swift in Sources */,
 				A82F1B242710616E0046E1C6 /* Model.swift in Sources */,
 				A82F1B222710613E0046E1C6 /* Presenter.swift in Sources */,
+				A8A6DA08273D829300C84C52 /* MainCollectionViewCell.swift in Sources */,
 				A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
 				A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */,
