@@ -60,7 +60,6 @@ class MainViewController: UIViewController {
                 btn.setTitleColor(UIColor.disabledGray, for: .normal)
             }
         }
-
     }
 
     private let settingButton: UIButton = {
