@@ -11,7 +11,7 @@ import SnapKit
 class MainViewController: UIViewController {
 
     private var searchButtonState = true
-
+    private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
         label.text = "KeepIt!"
@@ -159,7 +159,15 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureUI()
+        configureCollectionView()
     }
+
+    private func configureCollectionView() {
+        mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
+        mainCollectionView.delegate = self
+        mainCollectionView.dataSource = self
+    }
+
 
     private func searchBarActivation() {
         if searchButtonState {
@@ -208,6 +216,42 @@ class MainViewController: UIViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.height.equalTo(60)
         }
+
+        view.addSubview(mainCollectionView)
+        mainCollectionView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            $0.bottom.equalTo(mainToolBar.snp.top)
+        }
     }
 }
 
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
+        cell.backgroundColor = UIColor.disabledGray
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        let height = collectionView.frame.height
+
+        let itemsPerRow: CGFloat = 3
+        let itemsPerCol: CGFloat = 3
+
+        let widthPadding = sectionInset.left * (itemsPerRow+1)
+        let heightPadding = sectionInset.top * (itemsPerCol+1)
+
+        let cellWidth = (width - widthPadding) / itemsPerRow
+        let cellHeight = (height - heightPadding) / itemsPerCol
+
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+
+}
