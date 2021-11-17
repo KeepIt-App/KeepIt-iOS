@@ -32,4 +32,5 @@ extension UIColor {
     class var defaultBlack: UIColor {
         UIColor(red: 0.19, green: 0.19, blue: 0.19, alpha: 1.00)
     }
+
 }

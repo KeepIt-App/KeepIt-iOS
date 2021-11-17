@@ -11,7 +11,7 @@ extension UIViewController {
 
     func addBackButton() {
         let back = UIBarButtonItem()
-        back.title = "뒤로가기"
+        back.title = "Back"
         back.tintColor = UIColor.defaultBlack
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = back
     }
