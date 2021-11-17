@@ -156,7 +156,6 @@ class MainViewController: UIViewController {
         let flowLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         return collectionView
-
     }()
 
     override func viewDidLoad() {
@@ -181,17 +180,37 @@ class MainViewController: UIViewController {
 
     private func searchBarActivation() {
         if searchButtonState {
-            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseIn ,animations: {
+
+            mainCollectionView.snp.remakeConstraints {
+                $0.top.equalTo(searchBar.snp.bottom).offset(5)
+                $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
+                $0.bottom.equalTo(mainToolBar.snp.top)
+            }
+
+            UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseInOut ,animations: {
                 self.searchBar.alpha = 1.0
                 self.searchBar.isUserInteractionEnabled = true
+                self.view.layoutIfNeeded()
             })
+
             searchButtonState = !searchButtonState
         } else {
+
+            mainCollectionView.snp.remakeConstraints {
+                $0.top.equalTo(searchBar.snp.top).offset(5)
+                $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
+                $0.bottom.equalTo(mainToolBar.snp.top)
+            }
+
             UIView.animate(withDuration: 0.2, delay: 0,options: .curveEaseOut ,animations: {
                 self.searchBar.alpha = 0.0
                 self.searchBar.isUserInteractionEnabled = false
                 self.searchBar.text = ""
+                self.view.layoutIfNeeded()
             })
+
             searchButtonState = !searchButtonState
         }
 

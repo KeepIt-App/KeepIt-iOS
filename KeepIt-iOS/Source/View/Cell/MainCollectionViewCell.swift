@@ -43,9 +43,9 @@ class MainCollectionViewCell: UICollectionViewCell {
         configureLayout()
         self.layer.cornerRadius = 16
         self.layer.borderWidth = 0.0
-        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowColor = UIColor.init(white: 0, alpha: 0.7).cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
-        self.layer.shadowRadius = 1.5
+        self.layer.shadowRadius = 1.3
         self.layer.shadowOpacity = 0.3
         self.layer.masksToBounds = false
     }

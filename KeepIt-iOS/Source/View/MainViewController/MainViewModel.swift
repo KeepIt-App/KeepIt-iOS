@@ -6,7 +6,8 @@
 //
 
 import UIKit
+import Combine
 
-class Model {
+class MainViewModel {
     
 }
