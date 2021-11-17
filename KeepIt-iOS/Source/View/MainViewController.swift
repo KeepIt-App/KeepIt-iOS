@@ -12,6 +12,11 @@ class MainViewController: UIViewController {
 
     private var searchButtonState = true
     private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+
+    private var names = ["mac", "key"]
+    private var product = ["맥북 딱 대", "키크론"]
+    private var price = ["₩1,690,000원", "₩150,000원"]
+
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
         label.text = "KeepIt!"
@@ -150,21 +155,26 @@ class MainViewController: UIViewController {
     private let mainCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-
         return collectionView
 
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.init(white: 0.98, alpha: 1)
         configureUI()
         configureCollectionView()
     }
 
     private func configureCollectionView() {
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
+        let flow = UICollectionViewFlowLayout()
+        flow.itemSize = CGSize(width: view.frame.width/2.25, height: 200)
+        flow.sectionInset = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
+        mainCollectionView.collectionViewLayout = flow
+        mainCollectionView.backgroundColor = UIColor.init(white: 0.98, alpha: 1)
         mainCollectionView.delegate = self
+        mainCollectionView.showsVerticalScrollIndicator = false
         mainCollectionView.dataSource = self
     }
 
@@ -220,10 +230,12 @@ class MainViewController: UIViewController {
         view.addSubview(mainCollectionView)
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
             $0.bottom.equalTo(mainToolBar.snp.top)
         }
+
+        view.bringSubviewToFront(mainToolBar)
     }
 }
 
@@ -234,10 +246,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        cell.backgroundColor = UIColor.disabledGray
+        cell.loadProduct(names[indexPath.row], product: product[indexPath.row], price: price[indexPath.row])
+        cell.backgroundColor = UIColor.white
         return cell
     }
-
+    /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         let height = collectionView.frame.height
@@ -253,5 +266,5 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
 
         return CGSize(width: cellWidth, height: cellHeight)
     }
-
+    */
 }
