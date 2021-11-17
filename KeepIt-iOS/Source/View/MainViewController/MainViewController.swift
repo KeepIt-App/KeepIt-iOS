@@ -10,6 +10,10 @@ import SnapKit
 
 class MainViewController: UIViewController {
 
+    override func viewDidAppear(_ animated: Bool) {
+        navigationItem.largeTitleDisplayMode = .never
+    }
+
     private var searchButtonState = true
     private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
 
@@ -138,7 +142,9 @@ class MainViewController: UIViewController {
 
     @objc
     func writeAction() {
-
+        let addProductViewController = AddProductViewController()
+        addProductViewController.navigationItem.title = "추가하기"
+        navigationController?.pushViewController(addProductViewController, animated: true)
     }
 
     private let searchBar: UISearchBar = {
