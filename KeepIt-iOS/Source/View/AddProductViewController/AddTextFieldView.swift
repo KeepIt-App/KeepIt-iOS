@@ -19,17 +19,19 @@ class AddTextFieldView: UITextField {
     }
 
     func configurePlaceHolder(_ text: String) {
-        self.placeholder = text
+        self.attributedPlaceholder = NSAttributedString(string: text, attributes: [NSAttributedString.Key.foregroundColor: UIColor.disabledAllGray])
+        //self.placeholder = text
     }
 
     private func configureTextField() {
         delegate = self
         self.font = UIFont(name: "NanumSquareB", size: 15)
+
         self.clearButtonMode = UITextField.ViewMode.whileEditing
         self.borderStyle = UITextField.BorderStyle.roundedRect
-        self.layer.borderWidth = 0.5
-        self.layer.cornerRadius = 3
-        self.layer.borderColor = UIColor.init(white: 0.5, alpha: 1).cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+        self.layer.borderColor = UIColor.disabledAllGray.cgColor
     }
 }
 

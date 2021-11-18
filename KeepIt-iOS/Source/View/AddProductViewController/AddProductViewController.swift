@@ -7,11 +7,15 @@
 
 import UIKit
 import SnapKit
+import Cosmos
 
 class AddProductViewController: UIViewController {
 
+    override func viewDidLayoutSubviews() {
+        addScrollView.updateContentView()
+    }
+
     private let imageSelectView = ImageSelectView()
-    private let ratingStarView = RatingStarView()
 
     private let addProductMainLabel: UILabel = {
         let label = UILabel()
@@ -37,8 +41,25 @@ class AddProductViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "NanumSquareEB", size: 16)
         button.layer.cornerRadius = 8
         button.setTitleColor(UIColor.white, for: .normal)
-
+        button.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
         return button
+    }()
+
+    @objc
+    func doneAction() {
+        print(ratingStarView.rating)
+    }
+
+    private let ratingStarView: CosmosView = {
+        let starView = CosmosView()
+        starView.settings.filledColor = UIColor.keepItBlue
+        starView.settings.emptyColor = UIColor.disabledAllGray
+        starView.settings.emptyBorderWidth = 0
+        starView.settings.filledBorderWidth = 0
+        starView.settings.starSize = 35
+        starView.settings.starMargin = 5
+        starView.rating = 0
+        return starView
     }()
 
     private lazy var buttonView: UIView = {
@@ -63,9 +84,12 @@ class AddProductViewController: UIViewController {
         return buttonView
     }()
 
+    private let addScrollView = UIScrollView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
+        addScrollView.delegate = self
         self.addBackButton()
         configureLayout()
         configureNavigationBar()
@@ -77,73 +101,15 @@ class AddProductViewController: UIViewController {
     }
 
     private func configureNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
+
+        guard let navigationController = navigationController else { return }
+        navigationController.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         guard let largeFont = UIFont(name: "NanumSquareEB", size: 28) else { return }
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font : largeFont, NSAttributedString.Key.foregroundColor : UIColor.defaultBlack ]
+        navigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font : largeFont, NSAttributedString.Key.foregroundColor : UIColor.defaultBlack ]
     }
 
     private func configureLayout() {
-        view.addSubview(imageSelectView)
-        imageSelectView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(15)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-15)
-            $0.height.equalTo(100)
-        }
-
-        let nameTextField = AddTextFieldView()
-        nameTextField.configurePlaceHolder("이름을 입력하세요(필수)")
-        view.addSubview(nameTextField)
-        nameTextField.snp.makeConstraints {
-            $0.top.equalTo(imageSelectView.snp.bottom).offset(30)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(15)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-15)
-            $0.height.equalTo(50)
-        }
-
-        let priceTextField = AddTextFieldView()
-        priceTextField.configurePlaceHolder("가격을 입력해주세요 (단위: 원, 필수)")
-        view.addSubview(priceTextField)
-        priceTextField.snp.makeConstraints {
-            $0.top.equalTo(nameTextField.snp.bottom).offset(15)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(15)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-15)
-            $0.height.equalTo(50)
-        }
-
-        let linkTextField = AddTextFieldView()
-        view.addSubview(linkTextField)
-        linkTextField.configurePlaceHolder("링크를 입력해주세요")
-        linkTextField.snp.makeConstraints {
-            $0.top.equalTo(priceTextField.snp.bottom).offset(15)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(15)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-15)
-            $0.height.equalTo(50)
-        }
-
-        let memoTextField = AddTextFieldView()
-        view.addSubview(memoTextField)
-        memoTextField.configurePlaceHolder("간단한 메모를 남겨주세요")
-        memoTextField.snp.makeConstraints {
-            $0.top.equalTo(linkTextField.snp.bottom).offset(15)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(15)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-15)
-            $0.height.equalTo(50)
-        }
-
-        view.addSubview(priorityLabel)
-        priorityLabel.snp.makeConstraints {
-            $0.top.equalTo(memoTextField.snp.bottom).offset(30)
-            $0.centerX.equalToSuperview()
-        }
-
-        view.addSubview(ratingStarView)
-        ratingStarView.snp.makeConstraints {
-            $0.top.equalTo(priorityLabel.snp.bottom).offset(15)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(view.frame.width/5)
-            $0.height.equalTo(50)
-        }
 
         view.addSubview(buttonView)
         buttonView.snp.makeConstraints {
@@ -152,5 +118,82 @@ class AddProductViewController: UIViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.height.equalTo(80)
         }
+
+        view.addSubview(addScrollView)
+        addScrollView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.bottom.equalTo(buttonView.snp.top)
+        }
+
+        addScrollView.addSubview(imageSelectView)
+        imageSelectView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(addScrollView.snp.top).offset(15)
+            $0.height.equalTo(100)
+            $0.width.equalTo(view.frame.width*0.93)
+        }
+
+        let nameTextField = AddTextFieldView()
+        nameTextField.configurePlaceHolder("이름을 입력하세요(필수)")
+        addScrollView.addSubview(nameTextField)
+        nameTextField.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageSelectView.snp.bottom).offset(30)
+            $0.width.equalTo(view.frame.width*0.93)
+            $0.height.equalTo(50)
+        }
+
+        let priceTextField = AddTextFieldView()
+        priceTextField.configurePlaceHolder("가격을 입력해주세요 (단위: 원, 필수)")
+        addScrollView.addSubview(priceTextField)
+        priceTextField.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(nameTextField.snp.bottom).offset(15)
+            $0.width.equalTo(view.frame.width*0.93)
+            $0.height.equalTo(50)
+        }
+
+        let linkTextField = AddTextFieldView()
+        addScrollView.addSubview(linkTextField)
+        linkTextField.configurePlaceHolder("링크를 입력해주세요")
+        linkTextField.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(priceTextField.snp.bottom).offset(15)
+            $0.width.equalTo(view.frame.width*0.93)
+            $0.height.equalTo(50)
+        }
+
+        let memoTextField = AddTextFieldView()
+        addScrollView.addSubview(memoTextField)
+        memoTextField.configurePlaceHolder("간단한 메모를 남겨주세요")
+        memoTextField.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(linkTextField.snp.bottom).offset(15)
+            $0.width.equalTo(view.frame.width*0.93)
+            $0.height.equalTo(50)
+        }
+
+        addScrollView.addSubview(priorityLabel)
+        priorityLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(memoTextField.snp.bottom).offset(30)
+        }
+
+        addScrollView.addSubview(ratingStarView)
+        ratingStarView.snp.makeConstraints {
+            $0.top.equalTo(priorityLabel.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(addScrollView.snp.bottom)
+        }
+
+    }
+}
+
+
+extension AddProductViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
     }
 }

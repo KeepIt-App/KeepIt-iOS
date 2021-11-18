@@ -5,7 +5,7 @@ target 'KeepIt-iOS' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 pod 'SnapKit'
-
+pod 'Cosmos', '~> 23.0'
   # Pods for KeepIt-iOS
 
 end
