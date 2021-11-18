@@ -275,6 +275,13 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         cell.backgroundColor = UIColor.white
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let productDetailViewController = ProductDetailViewController()
+        productDetailViewController.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(productDetailViewController, animated: true)
+    }
+
     /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width

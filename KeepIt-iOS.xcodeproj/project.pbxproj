@@ -15,6 +15,7 @@
 		A87D70AF2700BBB500C723F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87D70AE2700BBB500C723F9 /* Assets.xcassets */; };
 		A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */; };
 		A89C855227461CB100B6013D /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89C855127461CB100B6013D /* UIScrollView.swift */; };
+		A89C855527462CEA00B6013D /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89C855427462CEA00B6013D /* ProductDetailViewController.swift */; };
 		A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */; };
 		A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */; };
 		A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA05273D69A100C84C52 /* SettingTableData.swift */; };
@@ -42,6 +43,7 @@
 		A87D70AE2700BBB500C723F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A89C855127461CB100B6013D /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
+		A89C855427462CEA00B6013D /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonExtension.swift; sourceTree = "<group>"; };
 		A8A6D9FF273D5CDD00C84C52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		A82F1B1F271060DE0046E1C6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A89C855327462CCB00B6013D /* ProductDeatilViewController */,
 				A8C288A427452B5C008C1521 /* AddProductViewController */,
 				A8C288A327452B50008C1521 /* SettingViewController */,
 				A8C288A2274521E2008C1521 /* MainViewController */,
@@ -118,6 +121,14 @@
 				A8A6D9FE273D5B5A00C84C52 /* System */,
 			);
 			path = "KeepIt-iOS";
+			sourceTree = "<group>";
+		};
+		A89C855327462CCB00B6013D /* ProductDeatilViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A89C855427462CEA00B6013D /* ProductDetailViewController.swift */,
+			);
+			path = ProductDeatilViewController;
 			sourceTree = "<group>";
 		};
 		A8A6D9FC273D5B1C00C84C52 /* Resource */ = {
@@ -362,6 +373,7 @@
 				A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */,
 				A8C288AE2745578A008C1521 /* UIFont.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
+				A89C855527462CEA00B6013D /* ProductDetailViewController.swift in Sources */,
 				A8C288A827454545008C1521 /* ImageSelectView.swift in Sources */,
 				A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */,
 			);
