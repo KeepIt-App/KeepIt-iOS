@@ -279,7 +279,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let productDetailViewController = ProductDetailViewController()
         productDetailViewController.modalPresentationStyle = .fullScreen
-        navigationController?.pushViewController(productDetailViewController, animated: true)
+        present(productDetailViewController, animated: true, completion: nil)
+        //navigationController?.pushViewController(productDetailViewController, animated: true)
     }
 
     /*

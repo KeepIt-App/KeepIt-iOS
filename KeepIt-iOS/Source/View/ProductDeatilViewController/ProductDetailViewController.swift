@@ -10,6 +10,19 @@ import SnapKit
 
 class ProductDetailViewController: UIViewController {
 
+    private let dismissButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("닫기", for: .normal)
+        button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
+        button.setTitleColor(UIColor.disabledGray, for: .normal)
+        return button
+    }()
+
+    @objc
+    func dismissAction() {
+        dismiss(animated: true, completion: nil)
+    }
+
     private let editButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "pencil"), for: .normal)
@@ -90,6 +103,12 @@ class ProductDetailViewController: UIViewController {
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.height.equalTo(60)
+        }
+
+        view.addSubview(dismissButton)
+        dismissButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(30)
         }
     }
 
