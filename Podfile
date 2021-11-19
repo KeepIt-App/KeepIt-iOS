@@ -6,6 +6,7 @@ target 'KeepIt-iOS' do
   use_frameworks!
 pod 'SnapKit'
 pod 'Cosmos', '~> 23.0'
+pod 'Alamofire', '~> 5.4'
   # Pods for KeepIt-iOS
 
 end

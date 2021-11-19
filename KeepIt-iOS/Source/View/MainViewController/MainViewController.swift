@@ -40,7 +40,7 @@ class MainViewController: UIViewController {
         return button
     }()
 
-    private let importanceOrderButton: UIButton = {
+    private let priorityOrderButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("중요도순", for: .normal)
         button.tintColor = #colorLiteral(red: 0.6039215686, green: 0.6352941176, blue: 0.662745098, alpha: 1)
@@ -60,7 +60,7 @@ class MainViewController: UIViewController {
         return button
     }()
 
-    private lazy var buttonArray = [latestOrderButton, importanceOrderButton, priceOrderButton]
+    private lazy var buttonArray = [latestOrderButton, priorityOrderButton, priceOrderButton]
 
     @objc
     func filterButtonAction(sender: UIButton) {
@@ -103,7 +103,7 @@ class MainViewController: UIViewController {
     }()
 
     private lazy var filterStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [latestOrderButton, importanceOrderButton, priceOrderButton])
+        let stackView = UIStackView(arrangedSubviews: [latestOrderButton, priorityOrderButton, priceOrderButton])
         stackView.axis = .horizontal
         stackView.spacing = 25
         return stackView
