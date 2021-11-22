@@ -40,6 +40,7 @@ class CoreDataManager {
     }
 
     // MARK: - Core Data CRUD
+
     func createProduct(productImage: Data, productName: String, productPrice: String, productLink: String, productMemo: String, productRatingStar: Float, addDate: Date) {
         let product = Product(context: context)
 
@@ -60,7 +61,7 @@ class CoreDataManager {
         }
         saveContext()
     }
-
+    
     func readProductList(tag: Int) -> [Product] {
         let readProducts: NSFetchRequest<Product> = Product.fetchRequest()
         var productList = [Product]()
@@ -84,7 +85,7 @@ class CoreDataManager {
                 }
             }
         }
-        
+
         return productList
     }
 

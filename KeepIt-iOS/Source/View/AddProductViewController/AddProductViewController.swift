@@ -8,15 +8,21 @@
 import UIKit
 import SnapKit
 import Cosmos
+import Combine
 
 class AddProductViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         addScrollView.updateContentView()
     }
-
+    private lazy var nameTextField = AddTextFieldView()
+    private lazy var priceTextField = AddTextFieldView()
+    private lazy var linkTextField = AddTextFieldView()
+    private lazy var memoTextField = AddTextFieldView()
     private let imageSelectView = ImageSelectView()
-
+    var addProductViewModel = AddProductViewModel()
+    var cancellables = Set<AnyCancellable>()
+    private var stream: AnyCancellable?
     private let addProductMainLabel: UILabel = {
         let label = UILabel()
         label.text = "추가하기"
@@ -41,6 +47,7 @@ class AddProductViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "NanumSquareEB", size: 16)
         button.layer.cornerRadius = 8
         button.setTitleColor(UIColor.white, for: .normal)
+        button.isEnabled = false
         button.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
         return button
     }()
@@ -93,6 +100,45 @@ class AddProductViewController: UIViewController {
         self.addBackButton()
         configureLayout()
         configureNavigationBar()
+        setUpBindings()
+    }
+
+    private func setUpBindings() {
+        nameTextField.textPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.addProductName, on: addProductViewModel)
+            .store(in: &cancellables)
+
+        priceTextField.textPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: \.addProductPrice, on: addProductViewModel)
+            .store(in: &cancellables)
+
+        linkTextField.textPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: \.addProductLink, on: addProductViewModel)
+            .store(in: &cancellables)
+
+        memoTextField.textPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: \.addProductMemo, on: addProductViewModel)
+            .store(in: &cancellables)
+
+        addProductViewModel.isInvalid
+            .receive(on: RunLoop.main)
+            .assign(to: \.isEnabled, on: addButton)
+            .store(in: &cancellables)
+
+        addButton
+            .publisher(for: \.isEnabled)
+            .sink { enabled in
+                if enabled {
+                    self.addButton.backgroundColor = UIColor.keepItBlue
+                } else {
+                    self.addButton.backgroundColor = UIColor.disabledGray
+                }
+            }
+            .store(in: &cancellables)
     }
 
     @objc
@@ -135,8 +181,8 @@ class AddProductViewController: UIViewController {
             $0.width.equalTo(view.frame.width*0.93)
         }
 
-        let nameTextField = AddTextFieldView()
         nameTextField.configurePlaceHolder("이름을 입력하세요(필수)")
+        nameTextField.tag = 1
         addScrollView.addSubview(nameTextField)
         nameTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -145,7 +191,7 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        let priceTextField = AddTextFieldView()
+        priceTextField.tag = 2
         priceTextField.configurePlaceHolder("가격을 입력해주세요 (단위: 원, 필수)")
         addScrollView.addSubview(priceTextField)
         priceTextField.snp.makeConstraints {
@@ -155,7 +201,7 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        let linkTextField = AddTextFieldView()
+        linkTextField.tag = 3
         addScrollView.addSubview(linkTextField)
         linkTextField.configurePlaceHolder("링크를 입력해주세요")
         linkTextField.snp.makeConstraints {
@@ -165,7 +211,7 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        let memoTextField = AddTextFieldView()
+        memoTextField.tag = 4
         addScrollView.addSubview(memoTextField)
         memoTextField.configurePlaceHolder("간단한 메모를 남겨주세요")
         memoTextField.snp.makeConstraints {
@@ -187,7 +233,6 @@ class AddProductViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(addScrollView.snp.bottom)
         }
-
     }
 }
 

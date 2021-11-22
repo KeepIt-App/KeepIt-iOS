@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class AddTextFieldView: UITextField {
 
@@ -26,7 +27,6 @@ class AddTextFieldView: UITextField {
     private func configureTextField() {
         delegate = self
         self.font = UIFont(name: "NanumSquareB", size: 15)
-
         self.clearButtonMode = UITextField.ViewMode.whileEditing
         self.borderStyle = UITextField.BorderStyle.roundedRect
         self.layer.borderWidth = 1
@@ -36,5 +36,8 @@ class AddTextFieldView: UITextField {
 }
 
 extension AddTextFieldView: UITextFieldDelegate {
-
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        return true
+    }
 }
