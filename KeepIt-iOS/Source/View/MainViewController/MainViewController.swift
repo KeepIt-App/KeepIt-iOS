@@ -7,20 +7,30 @@
 
 import UIKit
 import SnapKit
+import Combine
+import CombineCocoa
 
 class MainViewController: UIViewController {
 
+    // MARK: - 뷰 라이프 사이클 설정
+    override func viewWillAppear(_ animated: Bool) {
+        mainCollectionView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         navigationItem.largeTitleDisplayMode = .never
     }
 
+    // MARK: - 메인 뷰 기본 private 변수들
     private var searchButtonState = true
     private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
-
+    private let viewModel = MainViewModel()
     private var names = ["mac", "key"]
     private var product = ["맥북 딱 대", "키크론"]
     private var price = ["₩1,690,000원", "₩150,000원"]
+    private var cancellables = Set<AnyCancellable>()
 
+    // MARK: - 뷰 UI 선언
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
         label.text = "KeepIt!"
@@ -67,6 +77,10 @@ class MainViewController: UIViewController {
         for btn in buttonArray {
             if btn.tag == sender.tag {
                 sender.setTitleColor(UIColor.keepItBlue, for: .normal)
+                let dd = CoreDataManager.shared.readProductList(tag: sender.tag)
+                for index in dd {
+                    print(index.productRatingStar,index.addDate, index.productPrice)
+                }
             } else {
                 btn.setTitleColor(UIColor.disabledGray, for: .normal)
             }
@@ -131,12 +145,18 @@ class MainViewController: UIViewController {
     @objc
     func settingAction() {
         let settingVC = SettingViewController()
+        CoreDataManager.shared.clearAllData()
         settingVC.navigationItem.title = "정보"
         navigationController?.pushViewController(settingVC, animated: true)
     }
 
     @objc
     func searchAction() {
+        let a = CoreDataManager.shared.readAllProductList()
+        print()
+        for index in a {
+            print(index.productImage, index.productName, index.productPrice, index.productLink, index.productMemo, index.productRatingStar)
+        }
         searchBarActivation()
     }
 
@@ -164,12 +184,25 @@ class MainViewController: UIViewController {
         return collectionView
     }()
 
+    // MARK: - ViewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.00)
         configureUI()
         configureCollectionView()
+        bindViewModel()
     }
+
+    // MARK: - 메서드 환경 설정
+    private func bindViewModel() {
+        viewModel.state.posts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (data) in
+                print(data)
+            }
+            .store(in: &cancellables)
+    }
+
 
     private func configureCollectionView() {
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
@@ -222,6 +255,7 @@ class MainViewController: UIViewController {
 
     }
 
+    // MARK: - UI 세팅
     private func configureUI() {
 
         view.addSubview(keepItMainLabel)
@@ -266,12 +300,15 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        2
+        return CoreDataManager.shared.readAllProductList().count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        cell.loadProduct(names[indexPath.row], product: product[indexPath.row], price: price[indexPath.row])
+        let data = CoreDataManager.shared.readAllProductList()[indexPath.row]
+        guard let productName = data.productName else { return UICollectionViewCell() }
+        guard let productPrice = data.productPrice else { return UICollectionViewCell() }
+        cell.loadProduct(data.productImage ?? Data(), product: productName, price: productPrice)
         cell.backgroundColor = UIColor.white
         return cell
     }

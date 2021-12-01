@@ -9,20 +9,25 @@ import UIKit
 import SnapKit
 import Cosmos
 import Combine
+import CombineCocoa
+import PhotosUI
 
 class AddProductViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         addScrollView.updateContentView()
     }
+    
     private lazy var nameTextField = AddTextFieldView()
     private lazy var priceTextField = AddTextFieldView()
     private lazy var linkTextField = AddTextFieldView()
     private lazy var memoTextField = AddTextFieldView()
     private let imageSelectView = ImageSelectView()
+    private let numberFormatter = NumberFormatter()
+
     var addProductViewModel = AddProductViewModel()
     var cancellables = Set<AnyCancellable>()
-    private var stream: AnyCancellable?
+
     private let addProductMainLabel: UILabel = {
         let label = UILabel()
         label.text = "추가하기"
@@ -54,7 +59,6 @@ class AddProductViewController: UIViewController {
 
     @objc
     func doneAction() {
-        print(ratingStarView.rating)
     }
 
     private let ratingStarView: CosmosView = {
@@ -101,9 +105,33 @@ class AddProductViewController: UIViewController {
         configureLayout()
         configureNavigationBar()
         setUpBindings()
+        configureNumber()
+    }
+
+    func selectPhoto() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images])
+
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
+    }
+
+    private func configureNumber() {
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.locale = Locale.current
     }
 
     private func setUpBindings() {
+
+        imageSelectView.selectButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                self.selectPhoto()
+            }
+            .store(in: &cancellables)
+
         nameTextField.textPublisher
             .receive(on: DispatchQueue.main)
             .assign(to: \.addProductName, on: addProductViewModel)
@@ -113,6 +141,8 @@ class AddProductViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.addProductPrice, on: addProductViewModel)
             .store(in: &cancellables)
+
+        priceTextField.keyboardType = .numberPad
 
         linkTextField.textPublisher
             .receive(on: RunLoop.main)
@@ -128,6 +158,7 @@ class AddProductViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.isEnabled, on: addButton)
             .store(in: &cancellables)
+            
 
         addButton
             .publisher(for: \.isEnabled)
@@ -137,6 +168,14 @@ class AddProductViewController: UIViewController {
                 } else {
                     self.addButton.backgroundColor = UIColor.disabledGray
                 }
+            }
+            .store(in: &cancellables)
+
+        addButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                print("눌림")
+                self.addProductViewModel.saveProduct(rating: self.ratingStarView.rating)
             }
             .store(in: &cancellables)
     }
@@ -155,9 +194,32 @@ class AddProductViewController: UIViewController {
         navigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.font : largeFont, NSAttributedString.Key.foregroundColor : UIColor.defaultBlack ]
     }
 
+    private func fixImageOrientaion(image: UIImage) -> UIImage {
+        if image.imageOrientation == .up {
+            return image
+        }
+
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        let rect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        image.draw(in: rect)
+        guard let normalizedImage = UIGraphicsGetImageFromCurrentImageContext() else { return UIImage() }
+        UIGraphicsEndImageContext()
+
+        return normalizedImage
+    }
+
     private func configureLayout() {
 
         view.addSubview(buttonView)
+        view.addSubview(addScrollView)
+        addScrollView.addSubview(imageSelectView)
+        addScrollView.addSubview(nameTextField)
+        addScrollView.addSubview(priceTextField)
+        addScrollView.addSubview(linkTextField)
+        addScrollView.addSubview(memoTextField)
+        addScrollView.addSubview(priorityLabel)
+        addScrollView.addSubview(ratingStarView)
+
         buttonView.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -165,7 +227,7 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(80)
         }
 
-        view.addSubview(addScrollView)
+
         addScrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.snp.leading)
@@ -173,7 +235,7 @@ class AddProductViewController: UIViewController {
             $0.bottom.equalTo(buttonView.snp.top)
         }
 
-        addScrollView.addSubview(imageSelectView)
+
         imageSelectView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(addScrollView.snp.top).offset(15)
@@ -183,7 +245,7 @@ class AddProductViewController: UIViewController {
 
         nameTextField.configurePlaceHolder("이름을 입력하세요(필수)")
         nameTextField.tag = 1
-        addScrollView.addSubview(nameTextField)
+
         nameTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(imageSelectView.snp.bottom).offset(30)
@@ -193,7 +255,7 @@ class AddProductViewController: UIViewController {
 
         priceTextField.tag = 2
         priceTextField.configurePlaceHolder("가격을 입력해주세요 (단위: 원, 필수)")
-        addScrollView.addSubview(priceTextField)
+
         priceTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(nameTextField.snp.bottom).offset(15)
@@ -202,7 +264,7 @@ class AddProductViewController: UIViewController {
         }
 
         linkTextField.tag = 3
-        addScrollView.addSubview(linkTextField)
+
         linkTextField.configurePlaceHolder("링크를 입력해주세요")
         linkTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -212,7 +274,7 @@ class AddProductViewController: UIViewController {
         }
 
         memoTextField.tag = 4
-        addScrollView.addSubview(memoTextField)
+
         memoTextField.configurePlaceHolder("간단한 메모를 남겨주세요")
         memoTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -221,13 +283,13 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        addScrollView.addSubview(priorityLabel)
+
         priorityLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(memoTextField.snp.bottom).offset(30)
         }
 
-        addScrollView.addSubview(ratingStarView)
+
         ratingStarView.snp.makeConstraints {
             $0.top.equalTo(priorityLabel.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
@@ -238,7 +300,35 @@ class AddProductViewController: UIViewController {
 
 
 extension AddProductViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+}
 
+
+extension AddProductViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true, completion: nil)
+
+        //addProductViewModel.itemProvider = results.map(\.itemProvider)
+        addProductViewModel.itemProvider = results.map(\.itemProvider)
+        if addProductViewModel.itemProvider.count != 0 {
+            if addProductViewModel.itemProvider[0].canLoadObject(ofClass: UIImage.self) {
+                addProductViewModel.itemProvider[0].loadObject(ofClass: UIImage.self) { image, error in
+                    DispatchQueue.main.async {
+                        guard let image = image as? UIImage else { return }
+                        let orientImage = self.fixImageOrientaion(image: image)
+                        self.imageSelectView.loadSelectImage(image: orientImage)
+                        self.addProductViewModel.addProductImage = orientImage
+                        self.imageSelectView.snp.remakeConstraints {
+                            $0.centerX.equalToSuperview()
+                            $0.top.equalTo(self.addScrollView.snp.top).offset(15)
+                            $0.height.equalTo(300)
+                            $0.width.equalTo(self.view.frame.width*0.93)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -27,75 +27,80 @@ class CoreDataManager {
         return persistentContainer.viewContext
     }
 
+    private var productEntity: NSEntityDescription? {
+        return  NSEntityDescription.entity(forEntityName: "Product", in: context)
+    }
+
     // MARK: - Core Data Saving support
     func saveContext () {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+        do {
+            print("저장함 ㅇㅇ")
+            try context.save()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
 
     // MARK: - Core Data CRUD
 
-    func createProduct(productImage: Data, productName: String, productPrice: String, productLink: String, productMemo: String, productRatingStar: Float, addDate: Date) {
-        let product = Product(context: context)
-
-        product.productImage = productImage
-        product.productName = productName
-        product.productPrice = productPrice
-        product.productLink = productLink
-        product.productMemo = productMemo
-        product.productRatingStar = productRatingStar
-        product.addDate = addDate
-
-        do {
-            try product.validateForInsert()
-        } catch let error as NSError {
-            context.rollback()
-            print(error)
-            return
-        }
+    func createProduct(productModel: ProductModel) {
+        guard let entity = productEntity else { return }
+        let managedObject = NSManagedObject(entity: entity, insertInto: context)
+        managedObject.setValue(productModel.productName, forKey: "productName")
+        managedObject.setValue(productModel.productPrice, forKey: "productPrice")
+        managedObject.setValue(productModel.productLink, forKey: "productLink")
+        managedObject.setValue(productModel.productMemo, forKey: "productMemo")
+        managedObject.setValue(productModel.productRatingStar, forKey: "productRatingStar")
+        managedObject.setValue(productModel.addDate, forKey: "addDate")
+        managedObject.setValue(productModel.productImage, forKey: "productImage")
         saveContext()
     }
-    
+
+    func readAllProductList() -> [Product] {
+        do {
+            let request: NSFetchRequest<Product> = Product.fetchRequest()
+            let results = try context.fetch(request)
+            return results
+        } catch {
+            print(error.localizedDescription)
+        }
+        return []
+    }
+
+
     func readProductList(tag: Int) -> [Product] {
         let readProducts: NSFetchRequest<Product> = Product.fetchRequest()
         var productList = [Product]()
         if tag == 1 {
-            let sortByLatest = NSSortDescriptor(key: #keyPath(Product.addDate), ascending: false)
+            let sortByLatest = NSSortDescriptor(key: "addDate", ascending: false)
             readProducts.sortDescriptors = [sortByLatest]
         } else if tag == 2 {
-            let sortByPriority = NSSortDescriptor(key: #keyPath(Product.productRatingStar), ascending: false)
+            let sortByPriority = NSSortDescriptor(key: "productRatingStar", ascending: false)
             readProducts.sortDescriptors = [sortByPriority]
         } else if tag == 3 {
-            let sortByPrice = NSSortDescriptor(key: #keyPath(Product.productPrice), ascending: false)
+            let sortByPrice = NSSortDescriptor(key: "productPrice", ascending: false)
             readProducts.sortDescriptors = [sortByPrice]
         }
 
-        DispatchQueue.global().async {
-            self.context.performAndWait {
-                do {
-                    productList = try self.context.fetch(readProducts)
-                } catch {
-                    fatalError(error.localizedDescription)
-                }
+        context.performAndWait {
+            do {
+                productList = try context.fetch(readProducts)
+            } catch {
+                fatalError(error.localizedDescription)
             }
         }
-
+        print("여기서 보여주는거임?",productList)
         return productList
     }
 
-    func editProduct(_ product: Product, productImage: Data, productName: String, productPrice: String, productLink: String, productMemo: String, productRatingStar: Float) {
-        product.productImage = productImage
-        product.productName = productName
-        product.productPrice = productPrice
-        product.productLink = productLink
-        product.productMemo = productMemo
-        product.productRatingStar = productRatingStar
+    func editProduct(_ product: Product, productModel: ProductModel) {
+        product.productImage = productModel.productImage
+        product.productName = productModel.productName
+        product.productPrice = productModel.productPrice
+        product.productLink = productModel.productLink
+        product.productMemo = productModel.productMemo
+        product.productRatingStar = productModel.productRatingStar
 
         saveContext()
     }
@@ -103,5 +108,20 @@ class CoreDataManager {
     func deleteProduct(_ product: Product) {
         context.delete(product)
         saveContext()
+    }
+
+    public func clearAllData() {
+        let entities = self.persistentContainer.managedObjectModel.entities
+        entities.compactMap({ $0.name }).forEach(deleteAll)
+    }
+
+    private func deleteAll(entity: String) {
+        let reqVar = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let deleteAll = NSBatchDeleteRequest(fetchRequest: reqVar)
+        do { try context.execute(deleteAll)
+            try context.save()
+        } catch {
+            print("에러 발생")
+        }
     }
 }

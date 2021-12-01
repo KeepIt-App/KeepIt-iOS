@@ -8,6 +8,19 @@
 import UIKit
 import Combine
 
-class MainViewModel {
-    
+final class MainViewModel: ViewModel {
+
+    private var coreData = CoreDataManager.shared
+
+    struct Action {
+        let fetch = PassthroughSubject<Void, Never>()
+        let refresh = PassthroughSubject<Void, Never>()
+    }
+
+    struct State {
+        let posts = CurrentValueSubject<[ProductModel], Never>([])
+    }
+
+    let action = Action()
+    let state = State()
 }

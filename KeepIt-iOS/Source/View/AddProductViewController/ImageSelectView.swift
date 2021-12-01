@@ -7,7 +7,8 @@
 
 import UIKit
 import SnapKit
-import CloudKit
+import Combine
+import CombineCocoa
 
 class ImageSelectView: UIView {
 
@@ -15,11 +16,11 @@ class ImageSelectView: UIView {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 16
         imageView.contentMode = .scaleAspectFill
-
+        imageView.clipsToBounds = true
         return imageView
     }()
 
-    private let selectButton: UIButton = {
+    let selectButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus.circle"), for: .normal)
         button.setTitle("이미지 추가", for: .normal)
@@ -58,5 +59,19 @@ class ImageSelectView: UIView {
             $0.top.equalTo(self.snp.top)
             $0.bottom.equalTo(self.snp.bottom)
         }
+    }
+
+    func loadSelectImage(image: UIImage) {
+        selectButton.isHidden = true
+        selectImageView.image = image
+        addSubview(selectImageView)
+        selectButton.removeFromSuperview()
+        selectImageView.snp.makeConstraints {
+            $0.top.equalTo(self.snp.top)
+            $0.leading.equalTo(self.snp.leading)
+            $0.trailing.equalTo(self.snp.trailing)
+            $0.height.equalTo(300)
+        }
+        self.layer.borderWidth = 0
     }
 }

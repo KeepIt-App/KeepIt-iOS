@@ -7,6 +7,7 @@ target 'KeepIt-iOS' do
 pod 'SnapKit'
 pod 'Cosmos', '~> 23.0'
 pod 'Alamofire', '~> 5.4'
+pod 'CombineCocoa'
   # Pods for KeepIt-iOS
 
 end

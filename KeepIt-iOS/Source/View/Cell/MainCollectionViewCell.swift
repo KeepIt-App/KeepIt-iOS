@@ -54,10 +54,10 @@ class MainCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func loadProduct(_ name: String, product: String, price: String) {
-        productImageView.image = UIImage(named: name)
+    public func loadProduct(_ image: Data, product: String, price: String) {
+        productImageView.image = UIImage(data: image)
         productNameLabel.text = product
-        productPriceLabel.text = price
+        productPriceLabel.text = "₩"+price
     }
 
     private func configureLayout() {
