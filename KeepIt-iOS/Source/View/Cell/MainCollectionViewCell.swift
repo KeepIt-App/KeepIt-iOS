@@ -57,7 +57,7 @@ class MainCollectionViewCell: UICollectionViewCell {
     public func loadProduct(_ image: Data, product: String, price: String) {
         productImageView.image = UIImage(data: image)
         productNameLabel.text = product
-        productPriceLabel.text = "₩"+price
+        productPriceLabel.text = "₩"+price+"원"
     }
 
     private func configureLayout() {

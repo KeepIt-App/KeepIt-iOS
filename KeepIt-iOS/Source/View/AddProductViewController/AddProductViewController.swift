@@ -310,7 +310,6 @@ extension AddProductViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true, completion: nil)
 
-        //addProductViewModel.itemProvider = results.map(\.itemProvider)
         addProductViewModel.itemProvider = results.map(\.itemProvider)
         if addProductViewModel.itemProvider.count != 0 {
             if addProductViewModel.itemProvider[0].canLoadObject(ofClass: UIImage.self) {

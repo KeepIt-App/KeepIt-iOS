@@ -25,6 +25,7 @@ class AddProductViewModel: ViewModel {
     @Published var addProductMemo: String? = nil
     @Published var addProductImage: UIImage? = nil
     var itemProvider: [NSItemProvider] = []
+    
     struct Action {
         let fetch = PassthroughSubject<Void, Never>()
         let refresh = PassthroughSubject<Void, Never>()
@@ -47,5 +48,4 @@ class AddProductViewModel: ViewModel {
         coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: addProductPrice ?? "", productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
         coreData.saveContext()
     }
-
 }

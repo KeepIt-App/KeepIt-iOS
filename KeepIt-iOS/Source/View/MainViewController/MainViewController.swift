@@ -14,7 +14,13 @@ class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
     override func viewWillAppear(_ animated: Bool) {
-        mainCollectionView.reloadData()
+        OperationQueue().addOperation {
+            let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
+            self.viewModel.changeData(product: sort)
+            OperationQueue.main.addOperation {
+                self.mainCollectionView.reloadData()
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -25,9 +31,7 @@ class MainViewController: UIViewController {
     private var searchButtonState = true
     private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
     private let viewModel = MainViewModel()
-    private var names = ["mac", "key"]
-    private var product = ["맥북 딱 대", "키크론"]
-    private var price = ["₩1,690,000원", "₩150,000원"]
+
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - 뷰 UI 선언
@@ -77,9 +81,13 @@ class MainViewController: UIViewController {
         for btn in buttonArray {
             if btn.tag == sender.tag {
                 sender.setTitleColor(UIColor.keepItBlue, for: .normal)
-                let dd = CoreDataManager.shared.readProductList(tag: sender.tag)
-                for index in dd {
-                    print(index.productRatingStar,index.addDate, index.productPrice)
+                CoreDataManager.shared.selecFilterIndex = sender.tag
+                OperationQueue().addOperation {
+                    let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
+                    self.viewModel.changeData(product: sort)
+                    OperationQueue.main.addOperation {
+                        self.mainCollectionView.reloadData()
+                    }
                 }
             } else {
                 btn.setTitleColor(UIColor.disabledGray, for: .normal)
@@ -152,11 +160,6 @@ class MainViewController: UIViewController {
 
     @objc
     func searchAction() {
-        let a = CoreDataManager.shared.readAllProductList()
-        print()
-        for index in a {
-            print(index.productImage, index.productName, index.productPrice, index.productLink, index.productMemo, index.productRatingStar)
-        }
         searchBarActivation()
     }
 
@@ -300,12 +303,12 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CoreDataManager.shared.readAllProductList().count
+        return viewModel.currentData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        let data = CoreDataManager.shared.readAllProductList()[indexPath.row]
+        let data = viewModel.currentData[indexPath.row]
         guard let productName = data.productName else { return UICollectionViewCell() }
         guard let productPrice = data.productPrice else { return UICollectionViewCell() }
         cell.loadProduct(data.productImage ?? Data(), product: productName, price: productPrice)
@@ -317,24 +320,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         let productDetailViewController = ProductDetailViewController()
         productDetailViewController.modalPresentationStyle = .fullScreen
         present(productDetailViewController, animated: true, completion: nil)
-        //navigationController?.pushViewController(productDetailViewController, animated: true)
     }
 
-    /*
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width
-        let height = collectionView.frame.height
-
-        let itemsPerRow: CGFloat = 3
-        let itemsPerCol: CGFloat = 3
-
-        let widthPadding = sectionInset.left * (itemsPerRow+1)
-        let heightPadding = sectionInset.top * (itemsPerCol+1)
-
-        let cellWidth = (width - widthPadding) / itemsPerRow
-        let cellHeight = (height - heightPadding) / itemsPerCol
-
-        return CGSize(width: cellWidth, height: cellHeight)
-    }
-    */
 }

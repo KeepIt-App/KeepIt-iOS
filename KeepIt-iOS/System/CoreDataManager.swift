@@ -10,9 +10,8 @@ import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
-
+    var selecFilterIndex = 1
     // MARK: - Core Data stack
-
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "KeepIt_iOS")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -90,7 +89,6 @@ class CoreDataManager {
                 fatalError(error.localizedDescription)
             }
         }
-        print("여기서 보여주는거임?",productList)
         return productList
     }
 
