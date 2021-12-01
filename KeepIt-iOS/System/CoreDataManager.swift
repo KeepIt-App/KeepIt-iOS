@@ -42,7 +42,6 @@ class CoreDataManager {
     }
 
     // MARK: - Core Data CRUD
-
     func createProduct(productModel: ProductModel) {
         guard let entity = productEntity else { return }
         let managedObject = NSManagedObject(entity: entity, insertInto: context)
@@ -59,7 +58,10 @@ class CoreDataManager {
     func readAllProductList() -> [Product] {
         do {
             let request: NSFetchRequest<Product> = Product.fetchRequest()
+            let time = NSSortDescriptor(key: "addDate", ascending: false)
+            request.sortDescriptors = [time]
             let results = try context.fetch(request)
+
             return results
         } catch {
             print(error.localizedDescription)
@@ -78,7 +80,7 @@ class CoreDataManager {
             let sortByPriority = NSSortDescriptor(key: "productRatingStar", ascending: false)
             readProducts.sortDescriptors = [sortByPriority]
         } else if tag == 3 {
-            let sortByPrice = NSSortDescriptor(key: "productPrice", ascending: false)
+            let sortByPrice = NSSortDescriptor(key: "productPrice", ascending: true)
             readProducts.sortDescriptors = [sortByPrice]
         }
 

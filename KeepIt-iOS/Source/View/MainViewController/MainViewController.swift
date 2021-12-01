@@ -14,15 +14,18 @@ class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
     override func viewWillAppear(_ animated: Bool) {
+        print(CoreDataManager.shared.selecFilterIndex)
         OperationQueue().addOperation {
-            let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
-            self.viewModel.changeData(product: sort)
+            if CoreDataManager.shared.selecFilterIndex != 1 {
+                let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
+                self.viewModel.changeData(product: sort)
+            }
             OperationQueue.main.addOperation {
                 self.mainCollectionView.reloadData()
             }
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         navigationItem.largeTitleDisplayMode = .never
     }
@@ -194,6 +197,12 @@ class MainViewController: UIViewController {
         configureUI()
         configureCollectionView()
         bindViewModel()
+        configureFirstButton()
+    }
+
+    // MARK: - 뷰 구성 시작 시 필터 버튼 기본 설정
+    private func configureFirstButton() {
+        latestOrderButton.setTitleColor(UIColor.keepItBlue, for: .normal)
     }
 
     // MARK: - 메서드 환경 설정
@@ -303,7 +312,11 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.currentData.count
+        if CoreDataManager.shared.selecFilterIndex != 1 {
+            return viewModel.currentData.count
+        } else {
+            return CoreDataManager.shared.readAllProductList().count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -311,8 +324,18 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         let data = viewModel.currentData[indexPath.row]
         guard let productName = data.productName else { return UICollectionViewCell() }
         guard let productPrice = data.productPrice else { return UICollectionViewCell() }
-        cell.loadProduct(data.productImage ?? Data(), product: productName, price: productPrice)
-        cell.backgroundColor = UIColor.white
+
+        if CoreDataManager.shared.selecFilterIndex != 1 {
+            let coreData = CoreDataManager.shared.readAllProductList()[indexPath.row]
+            guard let coreDataProductName = coreData.productName else { return UICollectionViewCell() }
+            guard let coreDataProductPrice = coreData.productPrice else { return UICollectionViewCell() }
+            cell.loadProduct(data.productImage ?? Data(), product: coreDataProductName, price: coreDataProductPrice)
+            cell.backgroundColor = UIColor.white
+        } else {
+            cell.loadProduct(data.productImage ?? Data(), product: productName, price: productPrice)
+            cell.backgroundColor = UIColor.white
+        }
+
         return cell
     }
 

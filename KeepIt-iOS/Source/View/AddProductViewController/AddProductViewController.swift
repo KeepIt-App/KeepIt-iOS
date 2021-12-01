@@ -314,16 +314,18 @@ extension AddProductViewController: PHPickerViewControllerDelegate {
         if addProductViewModel.itemProvider.count != 0 {
             if addProductViewModel.itemProvider[0].canLoadObject(ofClass: UIImage.self) {
                 addProductViewModel.itemProvider[0].loadObject(ofClass: UIImage.self) { image, error in
-                    DispatchQueue.main.async {
-                        guard let image = image as? UIImage else { return }
-                        let orientImage = self.fixImageOrientaion(image: image)
-                        self.imageSelectView.loadSelectImage(image: orientImage)
-                        self.addProductViewModel.addProductImage = orientImage
-                        self.imageSelectView.snp.remakeConstraints {
-                            $0.centerX.equalToSuperview()
-                            $0.top.equalTo(self.addScrollView.snp.top).offset(15)
-                            $0.height.equalTo(300)
-                            $0.width.equalTo(self.view.frame.width*0.93)
+                    OperationQueue().addOperation {
+                        OperationQueue.main.addOperation {
+                            guard let image = image as? UIImage else { return }
+                            let orientImage = self.fixImageOrientaion(image: image)
+                            self.imageSelectView.loadSelectImage(image: orientImage)
+                            self.addProductViewModel.addProductImage = orientImage
+                            self.imageSelectView.snp.remakeConstraints {
+                                $0.centerX.equalToSuperview()
+                                $0.top.equalTo(self.addScrollView.snp.top).offset(15)
+                                $0.height.equalTo(300)
+                                $0.width.equalTo(self.view.frame.width*0.93)
+                            }
                         }
                     }
                 }
