@@ -20,6 +20,7 @@ final class MainViewModel: ViewModel {
     struct Action {
         let fetch = PassthroughSubject<Int, Never>()
         let refresh = PassthroughSubject<Int, Never>()
+        let search = PassthroughSubject<String, Never>()
     }
 
     struct State {
@@ -37,8 +38,9 @@ final class MainViewModel: ViewModel {
                 switch index {
                 case .latest:
                     DispatchQueue.global(qos: .background).async {
-                        let data = CoreDataManager.shared.readAllProductList()
-                        self.state.posts.send(data)
+                        CoreDataManager.shared.readProductList(tag: index.rawValue) { data in
+                            self.state.posts.send(data)
+                        }
                     }
                 case .price:
                     DispatchQueue.global(qos: .background).async {
@@ -61,6 +63,19 @@ final class MainViewModel: ViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] idx in
                 self?.action.fetch.send(idx)
+            }
+            .store(in: &cancellables)
+
+        action.search
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.global())
+            .sink { [weak self] searchText in
+                if searchText == "" {
+                    self?.action.refresh.send(CoreDataManager.shared.selecFilterIndex)
+                } else {
+                    let filter = self?.state.posts.value.filter{ $0.productName?.contains(searchText) != false }
+
+                    self?.state.posts.send(filter ?? [])
+                }
             }
             .store(in: &cancellables)
 

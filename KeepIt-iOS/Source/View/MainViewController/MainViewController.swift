@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Combine
 import CombineCocoa
+import Differ
 
 class MainViewController: UIViewController {
 
@@ -27,9 +28,8 @@ class MainViewController: UIViewController {
     private var searchButtonState = true
     private var sectionInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
     private let viewModel = MainViewModel()
-
     private var cancellables = Set<AnyCancellable>()
-
+    private var animateArray: [Product] = []
     // MARK: - 뷰 UI 선언
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
@@ -183,7 +183,7 @@ class MainViewController: UIViewController {
         configureCollectionView()
         bindViewModel()
         configureFirstButton()
-        setButtonBind()
+        setPublisherBind()
     }
 
     // MARK: - 뷰 구성 시작 시 필터 버튼 기본 설정
@@ -196,13 +196,14 @@ class MainViewController: UIViewController {
         viewModel.state.posts
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (data) in
-                self?.mainCollectionView.reloadData()
+                self?.mainCollectionView.reloadChanges(from: self?.animateArray ?? [], to: data)
+                self?.animateArray = data
             }
             .store(in: &cancellables)
     }
 
 
-    private func setButtonBind() {
+    private func setPublisherBind() {
         latestOrderButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -224,6 +225,13 @@ class MainViewController: UIViewController {
             .sink { [weak self] _ in
                 CoreDataManager.shared.selecFilterIndex = 3
                 self?.viewModel.action.refresh.send(3)
+            }
+            .store(in: &cancellables)
+
+        searchBar.textDidChangePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] searchText in
+                self?.viewModel.action.search.send(searchText)
             }
             .store(in: &cancellables)
     }
@@ -353,4 +361,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         present(productDetailViewController, animated: true, completion: nil)
     }
 
+}
+
+
+extension UICollectionView {
+    func reloadChanges<T: Collection>(from old: T, to new: T) where T.Element: Equatable {
+        animateItemChanges(oldData: old, newData: new, updateData: {})
+    }
 }

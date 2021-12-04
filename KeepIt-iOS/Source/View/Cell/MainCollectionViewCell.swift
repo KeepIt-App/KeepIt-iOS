@@ -54,7 +54,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func loadProduct(_ image: Data, product: String, price: Int32) {
+    public func loadProduct(_ image: Data, product: String, price: Int64) {
         self.productImageView.image = UIImage(data: image)
         self.productNameLabel.text = product
         DispatchQueue.global().async {

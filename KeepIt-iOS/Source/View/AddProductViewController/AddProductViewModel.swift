@@ -56,7 +56,7 @@ class AddProductViewModel: ViewModel {
     func saveProduct(rating: Double) {
         let filter = addProductPrice?.filter{ $0 != "," } ?? "0"
         guard let price = Int(filter) else { return }
-        coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: Int32(price), productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
+        coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: Int64(price), productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
         coreData.saveContext()
     }
 }
