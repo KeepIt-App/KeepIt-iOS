@@ -175,7 +175,7 @@ class AddProductViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink {
                 print("눌림")
-                self.addProductViewModel.saveProduct(rating: self.ratingStarView.rating)
+                self.addProductViewModel.action.save.send(self.ratingStarView.rating)
             }
             .store(in: &cancellables)
     }

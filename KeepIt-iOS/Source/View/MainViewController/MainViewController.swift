@@ -13,7 +13,13 @@ import CombineCocoa
 class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.action.refresh.send(CoreDataManager.shared.selecFilterIndex)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         navigationItem.largeTitleDisplayMode = .never
     }
 
@@ -200,7 +206,6 @@ class MainViewController: UIViewController {
         latestOrderButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("디폴트 눌림")
                 CoreDataManager.shared.selecFilterIndex = 1
                 self?.viewModel.action.refresh.send(1)
             }
@@ -209,7 +214,6 @@ class MainViewController: UIViewController {
         priorityOrderButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("중요도순 눌림")
                 CoreDataManager.shared.selecFilterIndex = 2
                 self?.viewModel.action.refresh.send(2)
             }
@@ -218,7 +222,6 @@ class MainViewController: UIViewController {
         priceOrderButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("가격순 눌림")
                 CoreDataManager.shared.selecFilterIndex = 3
                 self?.viewModel.action.refresh.send(3)
             }

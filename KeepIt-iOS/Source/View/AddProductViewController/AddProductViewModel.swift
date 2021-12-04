@@ -27,8 +27,7 @@ class AddProductViewModel: ViewModel {
     var itemProvider: [NSItemProvider] = []
     
     struct Action {
-        let fetch = PassthroughSubject<Void, Never>()
-        let refresh = PassthroughSubject<Void, Never>()
+        let save = PassthroughSubject<Double, Never>()
     }
 
     struct State {
@@ -44,12 +43,19 @@ class AddProductViewModel: ViewModel {
         .map { $0?.count ?? 0 > 1 && $1?.count ?? 0 > 1 }
         .eraseToAnyPublisher()
 
+    init() {
+        action.save
+            .receive(on: DispatchQueue.global())
+            .sink { [weak self] rating in
+                self?.saveProduct(rating: rating)
+
+            }
+            .store(in: &cancelables)
+    }
+
     func saveProduct(rating: Double) {
         let filter = addProductPrice?.filter{ $0 != "," } ?? "0"
-        print(filter)
-        print(Int32(filter))
         guard let price = Int(filter) else { return }
-        print(Int32(price))
         coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: Int32(price), productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
         coreData.saveContext()
     }
