@@ -45,7 +45,12 @@ class AddProductViewModel: ViewModel {
         .eraseToAnyPublisher()
 
     func saveProduct(rating: Double) {
-        coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: addProductPrice ?? "", productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
+        let filter = addProductPrice?.filter{ $0 != "," } ?? "0"
+        print(filter)
+        print(Int32(filter))
+        guard let price = Int(filter) else { return }
+        print(Int32(price))
+        coreData.createProduct(productModel: ProductModel(productImage: addProductImage?.pngData() ?? Data(), productName: addProductName ?? "", productPrice: Int32(price), productLink: addProductLink ?? "", productMemo: addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
         coreData.saveContext()
     }
 }

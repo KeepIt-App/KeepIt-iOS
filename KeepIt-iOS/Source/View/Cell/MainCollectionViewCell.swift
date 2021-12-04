@@ -54,10 +54,17 @@ class MainCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func loadProduct(_ image: Data, product: String, price: String) {
-        productImageView.image = UIImage(data: image)
-        productNameLabel.text = product
-        productPriceLabel.text = "₩"+price+"원"
+    public func loadProduct(_ image: Data, product: String, price: Int32) {
+        self.productImageView.image = UIImage(data: image)
+        self.productNameLabel.text = product
+        DispatchQueue.global().async {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            guard let number = numberFormatter.string(from: NSNumber(value: price)) else { return }
+            DispatchQueue.main.async {
+                self.productPriceLabel.text = "₩"+number+"원"
+            }
+        }
     }
 
     private func configureLayout() {

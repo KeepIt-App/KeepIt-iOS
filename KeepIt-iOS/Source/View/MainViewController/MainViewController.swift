@@ -13,19 +13,6 @@ import CombineCocoa
 class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
-    override func viewWillAppear(_ animated: Bool) {
-        print(CoreDataManager.shared.selecFilterIndex)
-        OperationQueue().addOperation {
-            if CoreDataManager.shared.selecFilterIndex != 1 {
-                let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
-                self.viewModel.changeData(product: sort)
-            }
-            OperationQueue.main.addOperation {
-                self.mainCollectionView.reloadData()
-            }
-        }
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         navigationItem.largeTitleDisplayMode = .never
     }
@@ -84,14 +71,6 @@ class MainViewController: UIViewController {
         for btn in buttonArray {
             if btn.tag == sender.tag {
                 sender.setTitleColor(UIColor.keepItBlue, for: .normal)
-                CoreDataManager.shared.selecFilterIndex = sender.tag
-                OperationQueue().addOperation {
-                    let sort = CoreDataManager.shared.readProductList(tag: CoreDataManager.shared.selecFilterIndex)
-                    self.viewModel.changeData(product: sort)
-                    OperationQueue.main.addOperation {
-                        self.mainCollectionView.reloadData()
-                    }
-                }
             } else {
                 btn.setTitleColor(UIColor.disabledGray, for: .normal)
             }
@@ -198,6 +177,7 @@ class MainViewController: UIViewController {
         configureCollectionView()
         bindViewModel()
         configureFirstButton()
+        setButtonBind()
     }
 
     // MARK: - 뷰 구성 시작 시 필터 버튼 기본 설정
@@ -210,11 +190,40 @@ class MainViewController: UIViewController {
         viewModel.state.posts
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (data) in
-                print(data)
+                self?.mainCollectionView.reloadData()
             }
             .store(in: &cancellables)
     }
 
+
+    private func setButtonBind() {
+        latestOrderButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("디폴트 눌림")
+                CoreDataManager.shared.selecFilterIndex = 1
+                self?.viewModel.action.refresh.send(1)
+            }
+            .store(in: &cancellables)
+
+        priorityOrderButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("중요도순 눌림")
+                CoreDataManager.shared.selecFilterIndex = 2
+                self?.viewModel.action.refresh.send(2)
+            }
+            .store(in: &cancellables)
+
+        priceOrderButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("가격순 눌림")
+                CoreDataManager.shared.selecFilterIndex = 3
+                self?.viewModel.action.refresh.send(3)
+            }
+            .store(in: &cancellables)
+    }
 
     private func configureCollectionView() {
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
@@ -312,23 +321,19 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if CoreDataManager.shared.selecFilterIndex != 1 {
-            return viewModel.currentData.count
-        } else {
-            return CoreDataManager.shared.readAllProductList().count
-        }
+        viewModel.state.posts.value.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        let data = viewModel.currentData[indexPath.row]
+        let data = viewModel.state.posts.value[indexPath.row]
         guard let productName = data.productName else { return UICollectionViewCell() }
-        guard let productPrice = data.productPrice else { return UICollectionViewCell() }
+        let productPrice = data.productPrice
 
         if CoreDataManager.shared.selecFilterIndex != 1 {
-            let coreData = CoreDataManager.shared.readAllProductList()[indexPath.row]
+            let coreData = viewModel.state.posts.value[indexPath.row]
             guard let coreDataProductName = coreData.productName else { return UICollectionViewCell() }
-            guard let coreDataProductPrice = coreData.productPrice else { return UICollectionViewCell() }
+            let coreDataProductPrice = coreData.productPrice
             cell.loadProduct(data.productImage ?? Data(), product: coreDataProductName, price: coreDataProductPrice)
             cell.backgroundColor = UIColor.white
         } else {

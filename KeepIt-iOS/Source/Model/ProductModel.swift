@@ -10,7 +10,7 @@ import Foundation
 struct ProductModel {
     let productImage: Data
     let productName: String
-    let productPrice: String
+    let productPrice: Int32
     let productLink: String
     let productMemo: String
     let productRatingStar: Double

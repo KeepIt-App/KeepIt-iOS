@@ -11,6 +11,8 @@ import CoreData
 class CoreDataManager {
     static let shared = CoreDataManager()
     var selecFilterIndex = 1
+    var count = 0
+
     // MARK: - Core Data stack
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "KeepIt_iOS")
@@ -70,18 +72,20 @@ class CoreDataManager {
     }
 
 
-    func readProductList(tag: Int) -> [Product] {
+    func readProductList(tag: Int, completion: ([Product]) -> Void) {
         let readProducts: NSFetchRequest<Product> = Product.fetchRequest()
         var productList = [Product]()
-        if tag == 1 {
-            let sortByLatest = NSSortDescriptor(key: "addDate", ascending: false)
-            readProducts.sortDescriptors = [sortByLatest]
-        } else if tag == 2 {
-            let sortByPriority = NSSortDescriptor(key: "productRatingStar", ascending: false)
-            readProducts.sortDescriptors = [sortByPriority]
-        } else if tag == 3 {
-            let sortByPrice = NSSortDescriptor(key: "productPrice", ascending: true)
-            readProducts.sortDescriptors = [sortByPrice]
+        DispatchQueue.global().async {
+            if tag == 1 {
+                let sortByLatest = NSSortDescriptor(key: "addDate", ascending: false)
+                readProducts.sortDescriptors = [sortByLatest]
+            } else if tag == 2 {
+                let sortByPriority = NSSortDescriptor(key: "productRatingStar", ascending: false)
+                readProducts.sortDescriptors = [sortByPriority]
+            } else if tag == 3 {
+                let sortByPrice = NSSortDescriptor(key: "productPrice", ascending: false)
+                readProducts.sortDescriptors = [sortByPrice]
+            }
         }
 
         context.performAndWait {
@@ -91,7 +95,7 @@ class CoreDataManager {
                 fatalError(error.localizedDescription)
             }
         }
-        return productList
+        completion(productList)
     }
 
     func editProduct(_ product: Product, productModel: ProductModel) {
