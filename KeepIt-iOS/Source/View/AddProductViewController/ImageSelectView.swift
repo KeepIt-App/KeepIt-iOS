@@ -63,7 +63,9 @@ class ImageSelectView: UIView {
 
     func loadSelectImage(image: UIImage) {
         selectButton.isHidden = true
-        selectImageView.image = image
+        DispatchQueue.main.async {
+            self.selectImageView.image = image
+        }
         addSubview(selectImageView)
         selectButton.removeFromSuperview()
         selectImageView.snp.makeConstraints {

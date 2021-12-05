@@ -53,13 +53,8 @@ class AddProductViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.setTitleColor(UIColor.white, for: .normal)
         button.isEnabled = false
-        button.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
         return button
     }()
-
-    @objc
-    func doneAction() {
-    }
 
     private let ratingStarView: CosmosView = {
         let starView = CosmosView()
@@ -94,6 +89,8 @@ class AddProductViewController: UIViewController {
         }
         return buttonView
     }()
+
+    private let spaceView = UIView()
 
     private let addScrollView = UIScrollView()
 
@@ -174,7 +171,6 @@ class AddProductViewController: UIViewController {
         addButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink {
-                print("눌림")
                 self.addProductViewModel.action.save.send(self.ratingStarView.rating)
             }
             .store(in: &cancellables)
@@ -219,6 +215,7 @@ class AddProductViewController: UIViewController {
         addScrollView.addSubview(memoTextField)
         addScrollView.addSubview(priorityLabel)
         addScrollView.addSubview(ratingStarView)
+        addScrollView.addSubview(spaceView)
 
         buttonView.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -244,8 +241,6 @@ class AddProductViewController: UIViewController {
         }
 
         nameTextField.configurePlaceHolder("이름을 입력하세요(필수)")
-        nameTextField.tag = 1
-
         nameTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(imageSelectView.snp.bottom).offset(30)
@@ -253,17 +248,13 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        priceTextField.tag = 2
         priceTextField.configurePlaceHolder("가격을 입력해주세요 (단위: 원, 필수)")
-
         priceTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(nameTextField.snp.bottom).offset(15)
             $0.width.equalTo(view.frame.width*0.93)
             $0.height.equalTo(50)
         }
-
-        linkTextField.tag = 3
 
         linkTextField.configurePlaceHolder("링크를 입력해주세요")
         linkTextField.snp.makeConstraints {
@@ -273,8 +264,7 @@ class AddProductViewController: UIViewController {
             $0.height.equalTo(50)
         }
 
-        memoTextField.tag = 4
-
+    
         memoTextField.configurePlaceHolder("간단한 메모를 남겨주세요")
         memoTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -293,6 +283,13 @@ class AddProductViewController: UIViewController {
         ratingStarView.snp.makeConstraints {
             $0.top.equalTo(priorityLabel.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
+        }
+
+        spaceView.snp.makeConstraints {
+            $0.top.equalTo(ratingStarView.snp.bottom).offset(5)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.height.equalTo(100)
             $0.bottom.equalTo(addScrollView.snp.bottom)
         }
     }

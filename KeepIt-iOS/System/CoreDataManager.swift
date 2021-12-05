@@ -11,7 +11,7 @@ import CoreData
 class CoreDataManager {
     static let shared = CoreDataManager()
     var selecFilterIndex = 1
-    var count = 0
+    var idx = 0
 
     // MARK: - Core Data stack
     lazy var persistentContainer: NSPersistentContainer = {

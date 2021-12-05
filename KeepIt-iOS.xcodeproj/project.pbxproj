@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		64D5E85A69407EEF578DC7DD /* Pods_KeepIt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */; };
+		A824DFBE275BE65B00415037 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */; };
 		A82F1B242710616E0046E1C6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82F1B232710616E0046E1C6 /* MainViewModel.swift */; };
 		A85325BD274796F40073FAFB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85325BC274796F40073FAFB /* CoreDataManager.swift */; };
 		A85325BF2747B23C0073FAFB /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85325BE2747B23C0073FAFB /* AddProductViewModel.swift */; };
@@ -19,6 +20,8 @@
 		A87D70B22700BBB500C723F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D70B02700BBB500C723F9 /* LaunchScreen.storyboard */; };
 		A89C855227461CB100B6013D /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89C855127461CB100B6013D /* UIScrollView.swift */; };
 		A89C855527462CEA00B6013D /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89C855427462CEA00B6013D /* ProductDetailViewController.swift */; };
+		A8A30DB9275C79A3000BAF6F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A30DB8275C79A3000BAF6F /* UIView.swift */; };
+		A8A30DBB275C79C7000BAF6F /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A30DBA275C79C7000BAF6F /* UICollectionView.swift */; };
 		A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */; };
 		A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */; };
 		A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A6DA05273D69A100C84C52 /* SettingTableData.swift */; };
@@ -39,6 +42,7 @@
 /* Begin PBXFileReference section */
 		11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KeepIt_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		A82F1B232710616E0046E1C6 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		A85325BC274796F40073FAFB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A85325BE2747B23C0073FAFB /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
@@ -51,6 +55,8 @@
 		A87D70B12700BBB500C723F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A89C855127461CB100B6013D /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		A89C855427462CEA00B6013D /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		A8A30DB8275C79A3000BAF6F /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		A8A30DBA275C79C7000BAF6F /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		A8A6D9FA273D5AD900C84C52 /* BackButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonExtension.swift; sourceTree = "<group>"; };
 		A8A6D9FF273D5CDD00C84C52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		A8A6DA02273D65DB00C84C52 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				A89C855427462CEA00B6013D /* ProductDetailViewController.swift */,
+				A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */,
 			);
 			path = ProductDeatilViewController;
 			sourceTree = "<group>";
@@ -243,6 +250,8 @@
 				A8C288AD2745578A008C1521 /* UIFont.swift */,
 				A89C855127461CB100B6013D /* UIScrollView.swift */,
 				A85325C02747C5060073FAFB /* UITextField.swift */,
+				A8A30DB8275C79A3000BAF6F /* UIView.swift */,
+				A8A30DBA275C79C7000BAF6F /* UICollectionView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -374,6 +383,7 @@
 			files = (
 				A89C855227461CB100B6013D /* UIScrollView.swift in Sources */,
 				A8C288A627452B7A008C1521 /* AddProductViewController.swift in Sources */,
+				A8A30DB9275C79A3000BAF6F /* UIView.swift in Sources */,
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A85325BD274796F40073FAFB /* CoreDataManager.swift in Sources */,
@@ -382,6 +392,7 @@
 				A8C288AC27455185008C1521 /* AddTextFieldView.swift in Sources */,
 				A8CF4DCA2729B7E200FBF0CA /* SettingViewController.swift in Sources */,
 				A82F1B242710616E0046E1C6 /* MainViewModel.swift in Sources */,
+				A8A30DBB275C79C7000BAF6F /* UICollectionView.swift in Sources */,
 				A85325C12747C5060073FAFB /* UITextField.swift in Sources */,
 				A8A6DA08273D829300C84C52 /* MainCollectionViewCell.swift in Sources */,
 				A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */,
@@ -389,6 +400,7 @@
 				A8C288AE2745578A008C1521 /* UIFont.swift in Sources */,
 				A87D70AD2700BBB300C723F9 /* KeepIt_iOS.xcdatamodeld in Sources */,
 				A89C855527462CEA00B6013D /* ProductDetailViewController.swift in Sources */,
+				A824DFBE275BE65B00415037 /* ProductDetailViewModel.swift in Sources */,
 				A8C288A827454545008C1521 /* ImageSelectView.swift in Sources */,
 				A8A6DA06273D69A100C84C52 /* SettingTableData.swift in Sources */,
 				A8C7AB84274D5B1300B6E0E7 /* ProductModel.swift in Sources */,

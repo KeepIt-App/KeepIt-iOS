@@ -5,12 +5,16 @@
 //  Created by 인병윤 on 2021/11/18.
 //
 
+import Alamofire
+import Combine
+import CombineCocoa
 import UIKit
 import SnapKit
-import Alamofire
 
 class ProductDetailViewController: UIViewController {
 
+    private let viewModel = ProductDetailViewModel()
+    var cancellables = Set<AnyCancellable>()
     private let dismissButton: UIButton = {
         let button = UIButton()
         button.setTitle("닫기", for: .normal)
@@ -91,9 +95,18 @@ class ProductDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        bindViewModel()
         view.backgroundColor = UIColor.white
         configureLayout()
+    }
+
+    private func bindViewModel() {
+        viewModel.state.product
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                print()
+            }
+            .store(in: &cancellables)
     }
 
 

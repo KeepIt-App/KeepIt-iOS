@@ -358,14 +358,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let productDetailViewController = ProductDetailViewController()
         productDetailViewController.modalPresentationStyle = .fullScreen
+        print(indexPath.row)
+        CoreDataManager.shared.idx = indexPath.row
         present(productDetailViewController, animated: true, completion: nil)
     }
 
 }
 
 
-extension UICollectionView {
-    func reloadChanges<T: Collection>(from old: T, to new: T) where T.Element: Equatable {
-        animateItemChanges(oldData: old, newData: new, updateData: {})
-    }
-}
+
