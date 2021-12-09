@@ -57,11 +57,11 @@ class ProductDetailViewController: UIViewController {
     private let ratingStarView: CosmosView = {
         let starView = CosmosView()
         starView.settings.filledColor = UIColor.keepItBlue
-        starView.settings.emptyColor = UIColor.disabledAllGray
+        starView.settings.emptyColor = UIColor.disabledGray
         starView.settings.emptyBorderWidth = 0
         starView.settings.filledBorderWidth = 0
-        starView.settings.starSize = 18
-        starView.settings.starMargin = 3
+        starView.settings.starSize = 15
+        starView.settings.starMargin = 2
         starView.isUserInteractionEnabled = false
         return starView
     }()
@@ -244,8 +244,8 @@ class ProductDetailViewController: UIViewController {
         productImageView.snp.makeConstraints {
             $0.top.equalTo(dismissButton.snp.bottom).offset(10)
             $0.centerX.equalTo(scrollView.snp.centerX)
-            $0.width.equalTo(view.frame.width - 20)
-            $0.height.equalTo(300)
+            $0.width.equalTo(view.frame.width - 25)
+            $0.height.equalTo(250)
         }
 
         productNameStackView.snp.makeConstraints {
@@ -255,7 +255,7 @@ class ProductDetailViewController: UIViewController {
 
         ratingStarView.snp.makeConstraints {
             $0.top.equalTo(productImageView.snp.bottom).offset(25)
-            $0.trailing.equalTo(productImageView.snp.trailing).inset(5)
+            $0.trailing.equalTo(productImageView.snp.trailing).inset(15)
         }
 
         memoStackView.snp.makeConstraints {
