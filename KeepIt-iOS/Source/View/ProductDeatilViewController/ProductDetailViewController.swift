@@ -10,6 +10,7 @@ import Combine
 import CombineCocoa
 import UIKit
 import SnapKit
+import Cosmos
 
 class ProductDetailViewController: UIViewController {
 
@@ -19,7 +20,7 @@ class ProductDetailViewController: UIViewController {
 
     weak var viewModel: ProductDetailViewModel?
     var cancellables = Set<AnyCancellable>()
-
+    // MARK: - 제품 표시 UI 관련 세팅
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -28,25 +29,84 @@ class ProductDetailViewController: UIViewController {
         return imageView
     }()
 
+    private let productNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NanumSquareEB", size: 20)
+        label.textColor = .defaultBlack
+
+        return label
+    }()
+
+    private let productPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NanumSquareB", size: 18)
+        label.textColor = .disabledAllGray
+
+        return label
+    }()
+
+    private lazy var productNameStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [productNameLabel, productPriceLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 3
+        stackView.alignment = .leading
+
+        return stackView
+    }()
+
+    private let ratingStarView: CosmosView = {
+        let starView = CosmosView()
+        starView.settings.filledColor = UIColor.keepItBlue
+        starView.settings.emptyColor = UIColor.disabledAllGray
+        starView.settings.emptyBorderWidth = 0
+        starView.settings.filledBorderWidth = 0
+        starView.settings.starSize = 18
+        starView.settings.starMargin = 3
+        starView.isUserInteractionEnabled = false
+        return starView
+    }()
+
+    private let memoLogoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "text.bubble.fill")
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .keepItBlue
+        return imageView
+    }()
+
+    private let productMemoLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NanumSquareB", size: 15)
+        label.textColor = .disabledAllGray
+        return label
+    }()
+
+    private lazy var memoStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [memoLogoImageView, productMemoLabel])
+        memoLogoImageView.snp.makeConstraints {
+            $0.width.equalTo(30)
+            $0.height.equalTo(30)
+        }
+        stackView.spacing = 10
+
+        return stackView
+    }()
+
+
+
+    // MARK: - 버튼 관련 UI 세팅
     private let dismissButton: UIButton = {
         let button = UIButton()
         button.setTitle("닫기", for: .normal)
-        button.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
         button.setTitleColor(UIColor.disabledGray, for: .normal)
         return button
     }()
-
-    @objc
-    func dismissAction() {
-        dismiss(animated: true, completion: nil)
-    }
 
     private let editButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "pencil"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(editAction), for: .touchUpInside)
         return button
     }()
 
@@ -55,8 +115,6 @@ class ProductDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "trash.fill"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
-
         return button
     }()
 
@@ -65,27 +123,8 @@ class ProductDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "square.and.arrow.up.circle.fill"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(shareAction), for: .touchUpInside)
-
         return button
     }()
-
-    @objc
-    func editAction() {
-        print("눌림")
-    }
-
-    @objc
-    func deleteAction() {
-        print("눌림")
-    }
-
-    @objc
-    func shareAction() {
-        let addProductViewController = AddProductViewController()
-        addProductViewController.navigationItem.title = "수정하기"
-        navigationController?.pushViewController(addProductViewController, animated: true)
-    }
 
     private lazy var mainToolBar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 30))
@@ -119,25 +158,69 @@ class ProductDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
+        setButtonBind()
+        configureLayout()
         scrollView.delegate = self
         view.backgroundColor = UIColor.white
-        configureLayout()
     }
+
+    private func setButtonBind() {
+
+        dismissButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink {
+                self.dismiss(animated: true, completion: nil)
+            }
+            .store(in: &cancellables)
+
+        editButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink {
+                print("눌림")
+            }
+            .store(in: &cancellables)
+
+        deleteButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink {
+                print("눌림")
+            }
+            .store(in: &cancellables)
+
+        shareButton.tapPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                print("눈림")
+            }
+            .store(in: &cancellables)
+
+    }
+
     private func bindViewModel() {
         viewModel?.state.selectProduct
-            .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.global(qos: .background))
             .sink { data in
-                self.productImageView.image = UIImage(data: data?.productImage ?? Data())
+                guard let data = data else { return }
+                DispatchQueue.main.async {
+                    let price = self.decimal(price: data.productPrice)
+                    self.productImageView.image = UIImage(data: data.productImage ?? Data())
+                    self.productNameLabel.text = data.productName
+                    self.productPriceLabel.text = "₩"+price+"원"
+                    self.ratingStarView.rating = data.productRatingStar
+                    self.productMemoLabel.text = data.productMemo ?? "등록된 메모가 없습니다"
+                }
             }
             .store(in: &cancellables)
     }
-
 
     private func configureLayout() {
         view.addSubview(scrollView)
         view.addSubview(mainToolBar)
         scrollView.addSubview(dismissButton)
         scrollView.addSubview(productImageView)
+        scrollView.addSubview(productNameStackView)
+        scrollView.addSubview(ratingStarView)
+        scrollView.addSubview(memoStackView)
 
         mainToolBar.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -153,7 +236,6 @@ class ProductDetailViewController: UIViewController {
             $0.bottom.equalTo(mainToolBar.snp.top)
         }
 
-        
         dismissButton.snp.makeConstraints {
             $0.top.equalTo(scrollView.snp.top).offset(30)
             $0.leading.equalTo(scrollView.snp.leading).offset(30)
@@ -166,9 +248,35 @@ class ProductDetailViewController: UIViewController {
             $0.height.equalTo(300)
         }
 
+        productNameStackView.snp.makeConstraints {
+            $0.top.equalTo(productImageView.snp.bottom).offset(25)
+            $0.leading.equalTo(scrollView.snp.leading).offset(25)
+        }
+
+        ratingStarView.snp.makeConstraints {
+            $0.top.equalTo(productImageView.snp.bottom).offset(25)
+            $0.trailing.equalTo(productImageView.snp.trailing).inset(5)
+        }
+
+        memoStackView.snp.makeConstraints {
+            $0.top.equalTo(productNameStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(scrollView.snp.leading).offset(25)
+        }
     }
 
 }
 
 extension ProductDetailViewController: UIScrollViewDelegate {
+}
+
+
+extension ProductDetailViewController {
+    func decimal(price: Int64) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+
+        let result = numberFormatter.string(from: NSNumber(value: price)) ?? ""
+
+        return result
+    }
 }
