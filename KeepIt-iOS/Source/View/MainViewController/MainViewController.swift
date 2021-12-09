@@ -239,9 +239,9 @@ class MainViewController: UIViewController {
     private func configureCollectionView() {
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
         let flow = UICollectionViewFlowLayout()
-        flow.itemSize = CGSize(width: view.frame.width/2.25, height: 200)
-        flow.sectionInset = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
-        mainCollectionView.collectionViewLayout = flow
+        flow.minimumLineSpacing = 1
+        flow.minimumInteritemSpacing = 1
+        //flow.sectionInset = UIEdgeInsets(top: 5, left: -3, bottom: 0, right: -3)
         mainCollectionView.backgroundColor = UIColor.init(white: 0.98, alpha: 1)
         mainCollectionView.delegate = self
         mainCollectionView.showsVerticalScrollIndicator = false
@@ -255,7 +255,7 @@ class MainViewController: UIViewController {
             mainCollectionView.snp.remakeConstraints {
                 $0.top.equalTo(searchBar.snp.bottom).offset(5)
                 $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
-                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-10)
                 $0.bottom.equalTo(mainToolBar.snp.top)
             }
 
@@ -271,7 +271,7 @@ class MainViewController: UIViewController {
             mainCollectionView.snp.remakeConstraints {
                 $0.top.equalTo(searchBar.snp.top).offset(5)
                 $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
-                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
+                $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-10)
                 $0.bottom.equalTo(mainToolBar.snp.top)
             }
 
@@ -321,8 +321,8 @@ class MainViewController: UIViewController {
         view.addSubview(mainCollectionView)
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(10)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             $0.bottom.equalTo(mainToolBar.snp.top)
         }
 
@@ -333,6 +333,22 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.state.posts.value.count
+    }
+
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 3, left: 8, bottom: 0, right: 8)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let itemSize = ((collectionView.frame.width - 20) - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+
+        if viewModel.state.posts.value[indexPath.row].productImage != nil {
+            return CGSize(width: itemSize, height: 200)
+        } else {
+            return CGSize(width: itemSize, height: 60)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -356,14 +372,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let productDetailViewController = ProductDetailViewController()
+        let productViewModel = ProductDetailViewModel()
+        DispatchQueue.global(qos: .background).async {
+            productViewModel.action.load.send(self.viewModel.state.posts.value[indexPath.row])
+        }
+        let productDetailViewController = ProductDetailViewController(viewModel: productViewModel)
         productDetailViewController.modalPresentationStyle = .fullScreen
-        print(indexPath.row)
-        CoreDataManager.shared.idx = indexPath.row
         present(productDetailViewController, animated: true, completion: nil)
     }
-
 }
-
-
-

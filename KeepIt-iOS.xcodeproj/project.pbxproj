@@ -10,6 +10,7 @@
 		64D5E85A69407EEF578DC7DD /* Pods_KeepIt_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F6CFD3EC21E840CCC5FF63 /* Pods_KeepIt_iOS.framework */; };
 		A824DFBE275BE65B00415037 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */; };
 		A82F1B242710616E0046E1C6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82F1B232710616E0046E1C6 /* MainViewModel.swift */; };
+		A8516D8E27611BE200F7ACCE /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8516D8D27611BE200F7ACCE /* CustomLayout.swift */; };
 		A85325BD274796F40073FAFB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85325BC274796F40073FAFB /* CoreDataManager.swift */; };
 		A85325BF2747B23C0073FAFB /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85325BE2747B23C0073FAFB /* AddProductViewModel.swift */; };
 		A85325C12747C5060073FAFB /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85325C02747C5060073FAFB /* UITextField.swift */; };
@@ -44,6 +45,7 @@
 		1D2A30A922B06693196FA95D /* Pods-KeepIt-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepIt-iOS.debug.xcconfig"; path = "Target Support Files/Pods-KeepIt-iOS/Pods-KeepIt-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		A82F1B232710616E0046E1C6 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		A8516D8D27611BE200F7ACCE /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
 		A85325BC274796F40073FAFB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A85325BE2747B23C0073FAFB /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
 		A85325C02747C5060073FAFB /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				A85325C02747C5060073FAFB /* UITextField.swift */,
 				A8A30DB8275C79A3000BAF6F /* UIView.swift */,
 				A8A30DBA275C79C7000BAF6F /* UICollectionView.swift */,
+				A8516D8D27611BE200F7ACCE /* CustomLayout.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A85325BD274796F40073FAFB /* CoreDataManager.swift in Sources */,
+				A8516D8E27611BE200F7ACCE /* CustomLayout.swift in Sources */,
 				A87D70A32700BBB300C723F9 /* AppDelegate.swift in Sources */,
 				A8A6DA03273D65DB00C84C52 /* SettingTableViewCell.swift in Sources */,
 				A8C288AC27455185008C1521 /* AddTextFieldView.swift in Sources */,

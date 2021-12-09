@@ -12,12 +12,14 @@ import Foundation
 
 final class ProductDetailViewModel: ViewModel {
 
+    private let mainViewModel = MainViewModel()
+
     struct Action {
-        let load = PassthroughSubject<Double, Never>()
+        let load = PassthroughSubject<Product, Never>()
     }
 
     struct State {
-        let product = CurrentValueSubject<ProductModel?, Never>(nil)
+        let selectProduct = CurrentValueSubject<Product?, Never>(nil)
     }
 
     let action = Action()
@@ -26,9 +28,9 @@ final class ProductDetailViewModel: ViewModel {
 
     init() {
         action.load
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] idx in
-                print(idx)
+            .receive(on: DispatchQueue.global(qos: .background))
+            .sink { [weak self] data in
+                self?.state.selectProduct.send(data)
             }
             .store(in: &cancelables)
     }

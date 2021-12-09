@@ -13,8 +13,21 @@ import SnapKit
 
 class ProductDetailViewController: UIViewController {
 
-    private let viewModel = ProductDetailViewModel()
+    override func viewDidLayoutSubviews() {
+        scrollView.updateContentView()
+    }
+
+    weak var viewModel: ProductDetailViewModel?
     var cancellables = Set<AnyCancellable>()
+
+    private let productImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 16
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
     private let dismissButton: UIButton = {
         let button = UIButton()
         button.setTitle("닫기", for: .normal)
@@ -74,7 +87,6 @@ class ProductDetailViewController: UIViewController {
         navigationController?.pushViewController(addProductViewController, animated: true)
     }
 
-
     private lazy var mainToolBar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 30))
         let fixedSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
@@ -93,25 +105,40 @@ class ProductDetailViewController: UIViewController {
         return toolBar
     }()
 
+    private let scrollView = UIScrollView()
+
+    init(viewModel: ProductDetailViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
+        scrollView.delegate = self
         view.backgroundColor = UIColor.white
         configureLayout()
     }
-
     private func bindViewModel() {
-        viewModel.state.product
+        viewModel?.state.selectProduct
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                print()
+            .sink { data in
+                self.productImageView.image = UIImage(data: data?.productImage ?? Data())
             }
             .store(in: &cancellables)
     }
 
 
     private func configureLayout() {
+        view.addSubview(scrollView)
         view.addSubview(mainToolBar)
+        scrollView.addSubview(dismissButton)
+        scrollView.addSubview(productImageView)
+
         mainToolBar.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -119,11 +146,29 @@ class ProductDetailViewController: UIViewController {
             $0.height.equalTo(60)
         }
 
-        view.addSubview(dismissButton)
-        dismissButton.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(30)
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.bottom.equalTo(mainToolBar.snp.top)
         }
+
+        
+        dismissButton.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.top).offset(30)
+            $0.leading.equalTo(scrollView.snp.leading).offset(30)
+        }
+
+        productImageView.snp.makeConstraints {
+            $0.top.equalTo(dismissButton.snp.bottom).offset(10)
+            $0.centerX.equalTo(scrollView.snp.centerX)
+            $0.width.equalTo(view.frame.width - 20)
+            $0.height.equalTo(300)
+        }
+
     }
 
+}
+
+extension ProductDetailViewController: UIScrollViewDelegate {
 }
