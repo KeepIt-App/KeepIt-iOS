@@ -10,13 +10,31 @@ import SnapKit
 import Combine
 import CombineCocoa
 import Differ
+import simd
 
 class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
     override func viewWillAppear(_ animated: Bool) {
-        print("바뀜")
         super.viewWillAppear(animated)
+        NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextObjectsDidChange)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.7, delay: 0, options: .curveEaseInOut, animations: {
+                        self?.successView.alpha = 1.0
+                    }, completion: { finished -> Void in
+                        UIView.animate(withDuration: 0.7, delay: 0, options: .curveEaseIn, animations: {
+                            self?.successView.alpha = 0.0
+                        })
+                        DispatchQueue.main.async {
+                            self?.mainCollectionView.reloadData()
+                        }
+                    })
+                }
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -171,7 +189,8 @@ class MainViewController: UIViewController {
 
     @objc
     func writeAction() {
-        let addProductViewController = AddProductViewController()
+        let addProductViewModel = AddProductViewModel()
+        let addProductViewController = AddProductViewController(viewModel: addProductViewModel)
         addProductViewController.navigationItem.title = "추가하기"
         navigationController?.pushViewController(addProductViewController, animated: true)
     }
@@ -378,8 +397,8 @@ class MainViewController: UIViewController {
 
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(10)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-10)
             $0.bottom.equalTo(mainToolBar.snp.top)
         }
 
@@ -437,9 +456,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         DispatchQueue.global().async {
             productViewModel.action.load.send(self.viewModel.state.posts.value[indexPath.row])
         }
+        
         let productDetailViewController = ProductDetailViewController(viewModel: productViewModel)
-        productDetailViewController.modalPresentationStyle = .fullScreen
-        present(productDetailViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(productDetailViewController, animated: true)
     }
 
 }

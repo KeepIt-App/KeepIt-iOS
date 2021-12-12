@@ -110,7 +110,9 @@ class ReuseStackView: UIView {
         self.openGraphTitleLabel.text = data[.title]
         self.openGraphSubLabel.text = data[.description]
         guard let urlString = data[.image] else { return }
-        let url = URL(string: urlString)
+        guard let encoding = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
+        guard let url = URL(string: encoding) else { return }
+        print(url)
         self.openGraphImageView.kf.indicatorType = .activity
         self.openGraphImageView.kf.setImage(
             with: url,

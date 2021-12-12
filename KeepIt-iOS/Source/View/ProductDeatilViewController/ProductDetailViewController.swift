@@ -175,14 +175,20 @@ class ProductDetailViewController: UIViewController {
         editButton.tapPublisher
             .receive(on: RunLoop.main)
             .sink {
-                print("눌림")
+                let editViewModel = AddProductViewModel()
+                guard let data = self.viewModel?.state.selectProduct.value else { return }
+                editViewModel.action.load.send(data)
+                let editViewController = AddProductViewController(viewModel: editViewModel)
+                editViewController.navigationItem.title = "수정하기"
+                self.navigationController?.pushViewController(editViewController, animated: true)
             }
             .store(in: &cancellables)
 
         deleteButton.tapPublisher
             .receive(on: RunLoop.main)
             .sink {
-                print("눌림")
+                self.configureAlertAction()
+                self.dismiss(animated: true, completion: nil)
             }
             .store(in: &cancellables)
 
@@ -239,10 +245,25 @@ class ProductDetailViewController: UIViewController {
 
     }
 
+    private func configureAlertAction() {
+        let alertController = UIAlertController(title: "아이템 삭제", message: "아이템을 삭제하시겠어요?", preferredStyle: .alert)
+
+        let doneButton = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+            self?.viewModel?.action.deleteProduct.send(())
+        }
+
+        let cancelButton = UIAlertAction(title: "취소", style: .default, handler: nil)
+
+        alertController.addAction(cancelButton)
+        alertController.addAction(doneButton)
+
+        self.present(alertController, animated: true, completion: nil)
+
+    }
+
     private func configureLayout() {
         view.addSubview(scrollView)
         view.addSubview(mainToolBar)
-        scrollView.addSubview(dismissButton)
         scrollView.addSubview(productImageView)
         scrollView.addSubview(productNameStackView)
         scrollView.addSubview(ratingStarView)
@@ -263,16 +284,11 @@ class ProductDetailViewController: UIViewController {
             $0.bottom.equalTo(mainToolBar.snp.top)
         }
 
-        dismissButton.snp.makeConstraints {
-            $0.top.equalTo(scrollView.snp.top).offset(30)
-            $0.leading.equalTo(scrollView.snp.leading).offset(30)
-        }
-
         productImageView.snp.makeConstraints {
-            $0.top.equalTo(dismissButton.snp.bottom).offset(10)
+            $0.top.equalTo(scrollView.snp.top).offset(10)
             $0.centerX.equalTo(scrollView.snp.centerX)
             $0.width.equalTo(view.frame.width - 25)
-            $0.height.equalTo(250)
+            $0.height.equalTo(300)
         }
 
         productNameStackView.snp.makeConstraints {

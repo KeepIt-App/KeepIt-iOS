@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-
 protocol ViewModel {
 
     associatedtype Action
@@ -28,10 +27,14 @@ final class AddProductViewModel: ViewModel {
     
     struct Action {
         let save = PassthroughSubject<Double, Never>()
+        let load = PassthroughSubject<Product, Never>()
+        let edit = PassthroughSubject<Double, Never>()
     }
 
     struct State {
         let products = CurrentValueSubject<String, Never>("")
+        let editData = CurrentValueSubject<Product?, Never>(nil)
+        let flag = CurrentValueSubject<Bool, Never>(false)
     }
 
     let action = Action()
@@ -51,6 +54,25 @@ final class AddProductViewModel: ViewModel {
 
             }
             .store(in: &cancelables)
+
+        action.load
+            .receive(on: DispatchQueue.global())
+            .sink { data in
+                self.state.editData.send(data)
+                self.state.flag.send(true)
+            }
+            .store(in: &cancelables)
+
+        action.edit
+            .receive(on: DispatchQueue.global())
+            .sink { rating in
+                let filter = self.addProductPrice?.filter{ $0 != "," } ?? "0"
+                guard let price = Int(filter) else { return }
+                guard let data = self.state.editData.value else { return }
+                CoreDataManager.shared.editProduct(data, productModel: ProductModel(productImage: self.addProductImage?.pngData() ?? Data(), productName: self.addProductName ?? "", productPrice: Int64(price), productLink: self.addProductLink ?? "", productMemo: self.addProductMemo ?? "", productRatingStar: rating, addDate: Date().timeIntervalSince1970))
+            }
+            .store(in: &cancelables)
+
     }
 
     private func saveProduct(rating: Double) {

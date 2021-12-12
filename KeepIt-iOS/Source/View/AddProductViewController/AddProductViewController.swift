@@ -25,8 +25,9 @@ class AddProductViewController: UIViewController {
     private let imageSelectView = ImageSelectView()
     private let numberFormatter = NumberFormatter()
 
-    var addProductViewModel = AddProductViewModel()
+    var addProductViewModel: AddProductViewModel!
     var cancellables = Set<AnyCancellable>()
+    
 
     private let addProductMainLabel: UILabel = {
         let label = UILabel()
@@ -91,8 +92,17 @@ class AddProductViewController: UIViewController {
     }()
 
     private let spaceView = UIView()
-
     private let addScrollView = UIScrollView()
+
+    init(viewModel: AddProductViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        print(viewModel)
+        self.addProductViewModel = viewModel
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,6 +113,7 @@ class AddProductViewController: UIViewController {
         configureNavigationBar()
         setUpBindings()
         configureNumber()
+        bindViewModel()
     }
 
     func selectPhoto() {
@@ -118,6 +129,16 @@ class AddProductViewController: UIViewController {
     private func configureNumber() {
         numberFormatter.numberStyle = .decimal
         numberFormatter.locale = Locale.current
+    }
+
+    private func bindViewModel() {
+        addProductViewModel.state.editData
+            .receive(on: DispatchQueue.main)
+            .sink { data in
+                guard let data = data else { return }
+                self.editMode(product: data)
+            }
+            .store(in: &cancellables)
     }
 
     private func setUpBindings() {
@@ -155,15 +176,18 @@ class AddProductViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.isEnabled, on: addButton)
             .store(in: &cancellables)
-            
 
         addButton
             .publisher(for: \.isEnabled)
             .sink { enabled in
-                if enabled {
+                if self.addProductViewModel.state.flag.value != true {
                     self.addButton.backgroundColor = UIColor.keepItBlue
                 } else {
-                    self.addButton.backgroundColor = UIColor.disabledGray
+                    if enabled {
+                        self.addButton.backgroundColor = UIColor.keepItBlue
+                    } else {
+                        self.addButton.backgroundColor = UIColor.disabledGray
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -171,7 +195,12 @@ class AddProductViewController: UIViewController {
         addButton.tapPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.addProductViewModel.action.save.send(self?.ratingStarView.rating ?? 0.0)
+                if self?.addProductViewModel.state.flag.value == false {
+                    self?.addProductViewModel.action.save.send(self?.ratingStarView.rating ?? 0.0)
+                } else {
+                    self?.addProductViewModel.action.edit.send(self?.ratingStarView.rating ?? 0.0)
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
             }
             .store(in: &cancellables)
 
@@ -211,6 +240,38 @@ class AddProductViewController: UIViewController {
         UIGraphicsEndImageContext()
 
         return normalizedImage
+    }
+
+    private func editMode(product: Product) {
+        guard let image = product.productImage else { return }
+        DispatchQueue.global().async {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            guard let number = numberFormatter.string(from: NSNumber(value: product.productPrice)) else { return }
+            DispatchQueue.main.async {
+                self.priceTextField.text = number
+            }
+            self.addProductViewModel.addProductName = product.productName
+            self.addProductViewModel.addProductLink = product.productLink
+            self.addProductViewModel.addProductPrice = number
+            self.addProductViewModel.addProductMemo = product.productMemo
+            self.addProductViewModel.addProductImage = UIImage(data: image)
+        }
+
+
+        imageSelectView.loadSelectImage(image: UIImage(data: image) ?? UIImage())
+        imageSelectView.snp.remakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(addScrollView.snp.top).offset(15)
+            $0.height.equalTo(300)
+            $0.width.equalTo(view.frame.width*0.93)
+        }
+        nameTextField.text = product.productName
+        linkTextField.text = product.productLink
+        memoTextField.text = product.productMemo
+        ratingStarView.rating = product.productRatingStar
+        addButton.isEnabled = true
+        addButton.backgroundColor = UIColor.keepItBlue
     }
 
     private func configureLayout() {
