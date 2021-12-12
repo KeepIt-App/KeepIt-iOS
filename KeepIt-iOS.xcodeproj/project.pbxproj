@@ -11,6 +11,8 @@
 		A81D105B276323730022D610 /* SaveSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81D105A276323730022D610 /* SaveSuccessView.swift */; };
 		A81D10CE2765D8F70022D610 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81D10CD2765D8F70022D610 /* ImageCacheManager.swift */; };
 		A81D10D02765E34D0022D610 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81D10CF2765E34D0022D610 /* UIImage.swift */; };
+		A81D10D42765F6550022D610 /* ReuseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81D10D32765F6550022D610 /* ReuseStackView.swift */; };
+		A81D10D6276643D20022D610 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81D10D5276643D20022D610 /* UIImageView.swift */; };
 		A824DFBE275BE65B00415037 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */; };
 		A82F1B242710616E0046E1C6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82F1B232710616E0046E1C6 /* MainViewModel.swift */; };
 		A8516D8E27611BE200F7ACCE /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8516D8D27611BE200F7ACCE /* CustomLayout.swift */; };
@@ -49,6 +51,8 @@
 		A81D105A276323730022D610 /* SaveSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSuccessView.swift; sourceTree = "<group>"; };
 		A81D10CD2765D8F70022D610 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		A81D10CF2765E34D0022D610 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		A81D10D32765F6550022D610 /* ReuseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseStackView.swift; sourceTree = "<group>"; };
+		A81D10D5276643D20022D610 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		A82F1B232710616E0046E1C6 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		A8516D8D27611BE200F7ACCE /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
@@ -150,6 +154,7 @@
 			children = (
 				A89C855427462CEA00B6013D /* ProductDetailViewController.swift */,
 				A824DFBD275BE65B00415037 /* ProductDetailViewModel.swift */,
+				A81D10D32765F6550022D610 /* ReuseStackView.swift */,
 			);
 			path = ProductDeatilViewController;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 				A8A30DBA275C79C7000BAF6F /* UICollectionView.swift */,
 				A8516D8D27611BE200F7ACCE /* CustomLayout.swift */,
 				A81D10CF2765E34D0022D610 /* UIImage.swift */,
+				A81D10D5276643D20022D610 /* UIImageView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -396,6 +402,7 @@
 				A89C855227461CB100B6013D /* UIScrollView.swift in Sources */,
 				A8C288A627452B7A008C1521 /* AddProductViewController.swift in Sources */,
 				A8A30DB9275C79A3000BAF6F /* UIView.swift in Sources */,
+				A81D10D6276643D20022D610 /* UIImageView.swift in Sources */,
 				A87D70A72700BBB300C723F9 /* MainViewController.swift in Sources */,
 				A8CF4DC627287CA500FBF0CA /* UIColor.swift in Sources */,
 				A85325BD274796F40073FAFB /* CoreDataManager.swift in Sources */,
@@ -409,6 +416,7 @@
 				A8A30DBB275C79C7000BAF6F /* UICollectionView.swift in Sources */,
 				A85325C12747C5060073FAFB /* UITextField.swift in Sources */,
 				A8A6DA08273D829300C84C52 /* MainCollectionViewCell.swift in Sources */,
+				A81D10D42765F6550022D610 /* ReuseStackView.swift in Sources */,
 				A81D105B276323730022D610 /* SaveSuccessView.swift in Sources */,
 				A8A6D9FB273D5AD900C84C52 /* BackButtonExtension.swift in Sources */,
 				A85325BF2747B23C0073FAFB /* AddProductViewModel.swift in Sources */,

@@ -9,6 +9,8 @@ pod 'Cosmos', '~> 23.0'
 pod 'Alamofire', '~> 5.4'
 pod 'CombineCocoa'
 pod 'Differ'
+pod 'OpenGraph'
+pod 'Kingfisher', '~> 7.0'
   # Pods for KeepIt-iOS
 
 end

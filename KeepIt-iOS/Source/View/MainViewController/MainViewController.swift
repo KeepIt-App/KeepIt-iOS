@@ -434,7 +434,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let productViewModel = ProductDetailViewModel()
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global().async {
             productViewModel.action.load.send(self.viewModel.state.posts.value[indexPath.row])
         }
         let productDetailViewController = ProductDetailViewController(viewModel: productViewModel)

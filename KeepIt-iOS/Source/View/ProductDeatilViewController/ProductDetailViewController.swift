@@ -20,6 +20,7 @@ class ProductDetailViewController: UIViewController {
 
     weak var viewModel: ProductDetailViewModel?
     var cancellables = Set<AnyCancellable>()
+    private let linkStackView = ReuseStackView()
     // MARK: - 제품 표시 UI 관련 세팅
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
@@ -66,7 +67,7 @@ class ProductDetailViewController: UIViewController {
         return starView
     }()
 
-    private let memoLogoImageView: UIImageView = {
+    private let stackLogoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "text.bubble.fill")
         imageView.contentMode = .scaleAspectFit
@@ -74,16 +75,16 @@ class ProductDetailViewController: UIViewController {
         return imageView
     }()
 
-    private let productMemoLabel: UILabel = {
+    private let productStackLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NanumSquareB", size: 15)
         label.textColor = .disabledAllGray
         return label
     }()
 
-    private lazy var memoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [memoLogoImageView, productMemoLabel])
-        memoLogoImageView.snp.makeConstraints {
+    private lazy var reuseStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [stackLogoImageView, productStackLabel])
+        stackLogoImageView.snp.makeConstraints {
             $0.width.equalTo(30)
             $0.height.equalTo(30)
         }
@@ -192,24 +193,50 @@ class ProductDetailViewController: UIViewController {
             }
             .store(in: &cancellables)
 
+        linkStackView.linkMoveButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink {
+                self.viewModel?.action.moveSafari.send(())
+            }
+            .store(in: &cancellables)
+
     }
 
     private func bindViewModel() {
+        DispatchQueue.global().async {
+            self.viewModel?.action.openGraphFetch
+                .send(self.viewModel?.state.selectProduct.value?.productLink ?? "")
+        }
+
         viewModel?.state.selectProduct
             .receive(on: DispatchQueue.global(qos: .background))
             .sink { data in
                 guard let data = data else { return }
                 guard let memo = data.productMemo else { return }
+                guard let link = data.productLink else { return }
                 DispatchQueue.main.async {
                     let price = self.decimal(price: data.productPrice)
                     self.productImageView.image = UIImage(data: data.productImage ?? Data())
                     self.productNameLabel.text = data.productName
                     self.productPriceLabel.text = "₩"+price+"원"
                     self.ratingStarView.rating = data.productRatingStar
-                    self.productMemoLabel.text = memo != "" ? memo : "등록된 메모가 없습니다"
+                    self.productStackLabel.text = memo != "" ? memo : "등록된 메모가 없습니다"
+                    if link != "" { self.linkStackView.showOpenGraph() }
                 }
             }
             .store(in: &cancellables)
+
+        viewModel?.state.openGraph
+            .receive(on: DispatchQueue.global())
+            .sink { ogData in
+                guard let data = ogData else { return }
+                print(data)
+                DispatchQueue.main.async {
+                    self.linkStackView.configureOpenGraphData(data: data)
+                }
+            }
+            .store(in: &cancellables)
+
     }
 
     private func configureLayout() {
@@ -219,7 +246,8 @@ class ProductDetailViewController: UIViewController {
         scrollView.addSubview(productImageView)
         scrollView.addSubview(productNameStackView)
         scrollView.addSubview(ratingStarView)
-        scrollView.addSubview(memoStackView)
+        scrollView.addSubview(reuseStackView)
+        scrollView.addSubview(linkStackView)
 
         mainToolBar.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -257,9 +285,17 @@ class ProductDetailViewController: UIViewController {
             $0.trailing.equalTo(productImageView.snp.trailing).inset(15)
         }
 
-        memoStackView.snp.makeConstraints {
+        reuseStackView.snp.makeConstraints {
             $0.top.equalTo(productNameStackView.snp.bottom).offset(20)
             $0.leading.equalTo(scrollView.snp.leading).offset(25)
+        }
+
+        linkStackView.snp.makeConstraints {
+            $0.top.equalTo(reuseStackView.snp.bottom).offset(20)
+            $0.centerX.equalTo(view.snp.centerX)
+            $0.height.equalTo(250)
+            $0.width.equalTo(view.frame.width - 45)
+
         }
     }
 
