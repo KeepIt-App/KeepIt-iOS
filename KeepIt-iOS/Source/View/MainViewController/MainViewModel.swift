@@ -21,6 +21,7 @@ final class MainViewModel: ViewModel {
         let fetch = PassthroughSubject<Int, Never>()
         let refresh = PassthroughSubject<Int, Never>()
         let search = PassthroughSubject<String, Never>()
+        let delete = PassthroughSubject<Int, Never>()
     }
 
     struct State {
@@ -29,7 +30,7 @@ final class MainViewModel: ViewModel {
 
     let action = Action()
     let state = State()
-
+    
     init() {
         action.fetch
             .receive(on: DispatchQueue.main)
@@ -76,6 +77,16 @@ final class MainViewModel: ViewModel {
 
                     self?.state.posts.send(filter ?? [])
                 }
+            }
+            .store(in: &cancellables)
+
+        action.delete
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] idx in
+                guard var data = self?.state.posts.value else { return }
+                CoreDataManager.shared.deleteProduct(data[idx])
+                data.remove(at: idx)
+                self?.state.posts.send(data)
             }
             .store(in: &cancellables)
 

@@ -7,9 +7,12 @@
 
 import UIKit
 import CoreData
+import Combine
+import CombineCocoa
 
 class CoreDataManager {
     static let shared = CoreDataManager()
+    weak var viewModel: MainViewModel?
     var selecFilterIndex = 1
     var idx = 0
 

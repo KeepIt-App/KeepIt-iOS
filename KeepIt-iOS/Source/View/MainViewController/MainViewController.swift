@@ -15,8 +15,25 @@ class MainViewController: UIViewController {
 
     // MARK: - 뷰 라이프 사이클 설정
     override func viewWillAppear(_ animated: Bool) {
+        print("바뀜")
         super.viewWillAppear(animated)
-        viewModel.action.refresh.send(CoreDataManager.shared.selecFilterIndex)
+        NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.7, delay: 0, options: .curveEaseInOut, animations: {
+                        self?.successView.alpha = 1.0
+                    }, completion: { finished -> Void in
+                        UIView.animate(withDuration: 0.7, delay: 0, options: .curveEaseIn, animations: {
+                            self?.successView.alpha = 0.0
+                        })
+                        DispatchQueue.global(qos: .background).async {
+                            self?.viewModel.action.refresh.send(CoreDataManager.shared.selecFilterIndex)
+                        }
+                    })
+                }
+            }
+            .store(in: &cancellables)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -30,6 +47,7 @@ class MainViewController: UIViewController {
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
     private var animateArray: [Product] = []
+    private let successView = SaveSuccessView()
     // MARK: - 뷰 UI 선언
     private let keepItMainLabel: UILabel = {
         let label = UILabel()
@@ -184,6 +202,7 @@ class MainViewController: UIViewController {
         bindViewModel()
         configureFirstButton()
         setPublisherBind()
+        setupLongGesture()
     }
 
     // MARK: - 뷰 구성 시작 시 필터 버튼 기본 설정
@@ -196,12 +215,34 @@ class MainViewController: UIViewController {
         viewModel.state.posts
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (data) in
+                print("흐음")
                 self?.mainCollectionView.reloadChanges(from: self?.animateArray ?? [], to: data)
                 self?.animateArray = data
             }
             .store(in: &cancellables)
     }
 
+    private func setupLongGesture() {
+        let longPressed = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
+        longPressed.minimumPressDuration = 0.5
+        longPressed.delegate = self
+        longPressed.delaysTouchesBegan = true
+        mainCollectionView.addGestureRecognizer(longPressed)
+    }
+
+    @objc
+    func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state != .began {
+            return
+        }
+
+        let index = gestureRecognizer.location(in: mainCollectionView)
+
+        if let indexPath = mainCollectionView.indexPathForItem(at: index) {
+            print(indexPath.row)
+            configureAlertAction(index: indexPath.row)
+        }
+    }
 
     private func setPublisherBind() {
         latestOrderButton.tapPublisher
@@ -209,6 +250,7 @@ class MainViewController: UIViewController {
             .sink { [weak self] _ in
                 CoreDataManager.shared.selecFilterIndex = 1
                 self?.viewModel.action.refresh.send(1)
+                print(CoreDataManager.shared.selecFilterIndex)
             }
             .store(in: &cancellables)
 
@@ -236,18 +278,32 @@ class MainViewController: UIViewController {
             .store(in: &cancellables)
     }
 
+    private func configureAlertAction(index: Int) {
+        let alertController = UIAlertController(title: "아이템 삭제", message: "선택한 아이템을 삭제하시겠어요?", preferredStyle: .alert)
+
+        let doneButton = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
+            self?.viewModel.action.delete.send(index)
+        }
+
+        let cancelButton = UIAlertAction(title: "취소", style: .default, handler: nil)
+
+        alertController.addAction(cancelButton)
+        alertController.addAction(doneButton)
+
+        self.present(alertController, animated: true, completion: nil)
+
+    }
+
     private func configureCollectionView() {
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellId)
         let flow = UICollectionViewFlowLayout()
         flow.minimumLineSpacing = 1
         flow.minimumInteritemSpacing = 1
-        //flow.sectionInset = UIEdgeInsets(top: 5, left: -3, bottom: 0, right: -3)
         mainCollectionView.backgroundColor = UIColor.init(white: 0.98, alpha: 1)
         mainCollectionView.delegate = self
         mainCollectionView.showsVerticalScrollIndicator = false
         mainCollectionView.dataSource = self
     }
-
 
     private func searchBarActivation() {
         if searchButtonState {
@@ -289,14 +345,18 @@ class MainViewController: UIViewController {
 
     // MARK: - UI 세팅
     private func configureUI() {
-
         view.addSubview(keepItMainLabel)
+        view.addSubview(searchBar)
+        view.addSubview(filterStackView)
+        view.addSubview(mainToolBar)
+        view.addSubview(mainCollectionView)
+        view.addSubview(successView)
+
         keepItMainLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(25)
         }
 
-        view.addSubview(searchBar)
         searchBar.alpha = 0.0
         searchBar.snp.makeConstraints {
             $0.top.equalTo(keepItMainLabel.snp.bottom).offset(10)
@@ -304,13 +364,11 @@ class MainViewController: UIViewController {
             $0.width.equalTo(view.bounds.width - 20)
         }
 
-        view.addSubview(filterStackView)
         filterStackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(25)
         }
 
-        view.addSubview(mainToolBar)
         mainToolBar.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -318,7 +376,6 @@ class MainViewController: UIViewController {
             $0.height.equalTo(60)
         }
 
-        view.addSubview(mainCollectionView)
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -327,14 +384,23 @@ class MainViewController: UIViewController {
         }
 
         view.bringSubviewToFront(mainToolBar)
+
+        successView.alpha = 0.0
+        successView.snp.makeConstraints {
+            $0.bottom.equalTo(mainToolBar.snp.top).inset(5)
+            $0.centerX.equalToSuperview()
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(50)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(50)
+            $0.height.equalTo(50)
+        }
     }
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.state.posts.value.count
     }
-
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 3, left: 8, bottom: 0, right: 8)
@@ -353,21 +419,16 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.cellId, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        let data = viewModel.state.posts.value[indexPath.row]
-        guard let productName = data.productName else { return UICollectionViewCell() }
-        let productPrice = data.productPrice
-
-        if CoreDataManager.shared.selecFilterIndex != 1 {
-            let coreData = viewModel.state.posts.value[indexPath.row]
-            guard let coreDataProductName = coreData.productName else { return UICollectionViewCell() }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let data = self.viewModel.state.posts.value[indexPath.row]
+            let coreData = self.viewModel.state.posts.value[indexPath.row]
+            guard let coreDataProductName = coreData.productName else { return }
             let coreDataProductPrice = coreData.productPrice
             cell.loadProduct(data.productImage ?? Data(), product: coreDataProductName, price: coreDataProductPrice)
-            cell.backgroundColor = UIColor.white
-        } else {
-            cell.loadProduct(data.productImage ?? Data(), product: productName, price: productPrice)
-            cell.backgroundColor = UIColor.white
-        }
-
+                DispatchQueue.main.async {
+                    cell.backgroundColor = UIColor.white
+                }
+            }
         return cell
     }
 
@@ -380,4 +441,10 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         productDetailViewController.modalPresentationStyle = .fullScreen
         present(productDetailViewController, animated: true, completion: nil)
     }
+
+}
+
+
+extension MainViewController: UIGestureRecognizerDelegate {
+
 }

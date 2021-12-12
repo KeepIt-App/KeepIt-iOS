@@ -12,6 +12,10 @@ class MainCollectionViewCell: UICollectionViewCell {
 
     static let cellId = "MainCell"
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "mac")
@@ -55,16 +59,25 @@ class MainCollectionViewCell: UICollectionViewCell {
     }
 
     public func loadProduct(_ image: Data, product: String, price: Int64) {
-        self.productImageView.image = UIImage(data: image)
-        self.productNameLabel.text = product
         DispatchQueue.global().async {
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             guard let number = numberFormatter.string(from: NSNumber(value: price)) else { return }
             DispatchQueue.main.async {
+                self.productNameLabel.text = product
                 self.productPriceLabel.text = "₩"+number+"원"
             }
         }
+
+        DispatchQueue.global(qos: .userInteractive).async {
+            let loadImage = UIImage(data: image)
+
+            DispatchQueue.main.async {
+                self.productImageView.image = loadImage
+            }
+        }
+
+
     }
 
     private func configureLayout() {

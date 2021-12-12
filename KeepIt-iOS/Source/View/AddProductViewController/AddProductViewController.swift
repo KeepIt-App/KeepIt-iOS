@@ -170,8 +170,17 @@ class AddProductViewController: UIViewController {
 
         addButton.tapPublisher
             .receive(on: DispatchQueue.main)
-            .sink {
-                self.addProductViewModel.action.save.send(self.ratingStarView.rating)
+            .sink { [weak self] _ in
+                self?.addProductViewModel.action.save.send(self?.ratingStarView.rating ?? 0.0)
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: Notification.Name.NSManagedObjectContextDidSave)
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
             .store(in: &cancellables)
     }
@@ -311,12 +320,14 @@ extension AddProductViewController: PHPickerViewControllerDelegate {
         if addProductViewModel.itemProvider.count != 0 {
             if addProductViewModel.itemProvider[0].canLoadObject(ofClass: UIImage.self) {
                 addProductViewModel.itemProvider[0].loadObject(ofClass: UIImage.self) { image, error in
-                    OperationQueue().addOperation {
-                        OperationQueue.main.addOperation {
-                            guard let image = image as? UIImage else { return }
-                            let orientImage = self.fixImageOrientaion(image: image)
-                            self.imageSelectView.loadSelectImage(image: orientImage)
-                            self.addProductViewModel.addProductImage = orientImage
+                    DispatchQueue.global().async {
+                        guard let image = image as? UIImage else { return }
+                        let orientImage = self.fixImageOrientaion(image: image)
+                        print(image.size.width, image.size.height)
+                        guard let resizeImage = image.size.width > 2000 && image.size.height > 2000 ?  orientImage.resized(withPercentage: 0.25) : orientImage.resized(withPercentage: 1) else { return }
+                        self.addProductViewModel.addProductImage = resizeImage
+                        DispatchQueue.main.async {
+                            self.imageSelectView.loadSelectImage(image: resizeImage)
                             self.imageSelectView.snp.remakeConstraints {
                                 $0.centerX.equalToSuperview()
                                 $0.top.equalTo(self.addScrollView.snp.top).offset(15)
