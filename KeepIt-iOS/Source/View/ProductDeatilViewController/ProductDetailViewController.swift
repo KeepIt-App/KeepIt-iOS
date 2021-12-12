@@ -92,8 +92,6 @@ class ProductDetailViewController: UIViewController {
         return stackView
     }()
 
-
-
     // MARK: - 버튼 관련 UI 세팅
     private let dismissButton: UIButton = {
         let button = UIButton()
@@ -201,13 +199,14 @@ class ProductDetailViewController: UIViewController {
             .receive(on: DispatchQueue.global(qos: .background))
             .sink { data in
                 guard let data = data else { return }
+                guard let memo = data.productMemo else { return }
                 DispatchQueue.main.async {
                     let price = self.decimal(price: data.productPrice)
                     self.productImageView.image = UIImage(data: data.productImage ?? Data())
                     self.productNameLabel.text = data.productName
                     self.productPriceLabel.text = "₩"+price+"원"
                     self.ratingStarView.rating = data.productRatingStar
-                    self.productMemoLabel.text = data.productMemo ?? "등록된 메모가 없습니다"
+                    self.productMemoLabel.text = memo != "" ? memo : "등록된 메모가 없습니다"
                 }
             }
             .store(in: &cancellables)
