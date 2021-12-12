@@ -159,6 +159,7 @@ class ProductDetailViewController: UIViewController {
         bindViewModel()
         setButtonBind()
         configureLayout()
+        self.addBackButton()
         scrollView.delegate = self
         view.backgroundColor = UIColor.white
     }
@@ -233,9 +234,12 @@ class ProductDetailViewController: UIViewController {
             .store(in: &cancellables)
 
         viewModel?.state.openGraph
-            .receive(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink { ogData in
-                guard let data = ogData else { return }
+                guard let data = ogData else {
+                    self.linkStackView.loadFail()
+                    return
+                }
                 print(data)
                 DispatchQueue.main.async {
                     self.linkStackView.configureOpenGraphData(data: data)

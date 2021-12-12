@@ -107,22 +107,31 @@ class ReuseStackView: UIView {
     }
 
     func configureOpenGraphData(data: OpenGraph) {
-        self.openGraphTitleLabel.text = data[.title]
-        self.openGraphSubLabel.text = data[.description]
         guard let urlString = data[.image] else { return }
         guard let encoding = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         guard let url = URL(string: encoding) else { return }
-        print(url)
         self.openGraphImageView.kf.indicatorType = .activity
         self.openGraphImageView.kf.setImage(
             with: url,
             placeholder: nil,
             options: [.transition(.fade(0.4))],
-            completionHandler: nil
-        )
+            completionHandler: { result in
+                switch result {
+                case .failure(let error):
+                    print("에러남 ㅇㅇ ㅋㅋ", error.localizedDescription)
+                case .success(_):
+                    self.openGraphTitleLabel.text = data[.title]
+                    self.openGraphSubLabel.text = data[.description]
+                }
+            })
     }
 
-    
+    func loadFail() {
+        DispatchQueue.main.async {
+            self.openGraphTitleLabel.text = "잘못된 링크이거나, 지원하지 않는 링크입니다."
+            self.openGraphSubLabel.text = "다시한번 링크를 확인해주세요!"
+        }
+    }
 
     private func configureLayout() {
         addSubview(reuseStackView)
